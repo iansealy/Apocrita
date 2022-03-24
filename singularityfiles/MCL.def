@@ -1,0 +1,74 @@
+Bootstrap: library
+From: iansealy/alpine/alpine311:3.11.3
+
+%labels
+    Author Richard White & Ian Sealy
+    Version 14-137
+
+%post
+    apk --no-cache add --virtual build-dependencies build-base curl
+    curl -SsOL https://micans.org/mcl/src/mcl-14-137.tar.gz
+    tar zxf mcl-14-137.tar.gz
+    cd mcl-14-137
+    ./configure
+    make
+    make check
+    make install
+    cd ..
+    rm -rf mcl-14-137*
+    apk del build-dependencies
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+
+%runscript
+    /usr/local/bin/mcl "$@"
+
+%apprun clm
+    /usr/local/bin/clm "$@"
+
+%apprun clmformat
+    /usr/local/bin/clmformat "$@"
+
+%apprun clxdo
+    /usr/local/bin/clxdo "$@"
+
+%apprun mcl
+    /usr/local/bin/mcl "$@"
+
+%apprun mclcm
+    /usr/local/bin/mclcm "$@"
+
+%apprun mclpipeline
+    /usr/local/bin/mclpipeline "$@"
+
+%apprun mcx
+    /usr/local/bin/mcx "$@"
+  
+%apprun mcxarray
+    /usr/local/bin/mcxarray "$@"
+
+%apprun mcxassemble
+    /usr/local/bin/mcxassemble "$@"
+
+%apprun mcxdump
+    /usr/local/bin/mcxdump "$@"
+
+%apprun mcxi
+    /usr/local/bin/mcxi "$@"
+
+%apprun mcxload
+    /usr/local/bin/mcxload "$@"
+
+%apprun mcxmap
+    /usr/local/bin/mcxmap "$@"
+
+%apprun mcxrand
+    /usr/local/bin/mcxrand "$@"
+
+%apprun mcxsubs
+    /usr/local/bin/mcxsubs "$@"
+
+%help
+    MCL - a fast and scalable unsupervised cluster algorithm for graphs

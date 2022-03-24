@@ -1,0 +1,41 @@
+Bootstrap: library
+From: iansealy/alpine/alpine311:3.11.3
+
+%labels
+    Author Ian Sealy
+    Version 0.6.2
+
+%post
+    apk --no-cache add --virtual build-dependencies go git
+    mkdir -p $HOME/go/src/golang.org/x
+    cd $HOME/go/src/golang.org/x
+    for repo in text xerrors; do
+      git clone https://github.com/golang/$repo.git
+    done
+    for pair in tealeg/xlsx frankban/quicktest peterbourgon/diskv rogpeppe/fastuuid google/btree google/go-cmp kr/pretty kr/text; do
+      user=`echo $pair | sed -e 's/\/.*//'`
+      repo=`echo $pair | sed -e 's/.*\///'`
+      mkdir -p $HOME/go/src/github.com/$user
+      cd $HOME/go/src/github.com/$user
+      git clone https://github.com/$user/$repo.git
+    done
+    cd
+    git clone https://gitlab.com/DerLinkshaender/csv2xlsx.git
+    cd csv2xlsx
+    git checkout c9048ee4bfd5f42cf1360d61b1738413d42008f5
+    go build -ldflags "-X main.versionInfo=0.6.2 -X main.buildTimestamp=`date +%FT%T%z`"
+    cp csv2xlsx /usr/local/bin
+    cd ..
+    rm -rf csv2xlsx $HOME/go $HOME/.cache
+    apk del build-dependencies
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+
+%runscript
+    /usr/local/bin/csv2xlsx "$@"
+
+%help
+    csv2xlsx - a simple, single file executable, no runtime libs command line tool to convert a CSV file to XLSX, written in Go
+

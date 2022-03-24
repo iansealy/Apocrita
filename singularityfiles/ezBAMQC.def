@@ -1,0 +1,34 @@
+Bootstrap: library
+From: iansealy/alpine/alpine311:3.11.3
+
+%labels
+    Author Ian Sealy
+    Version 0.6.7
+
+%post
+    apk --no-cache add R python2 font-noto
+    apk --no-cache add --virtual build-dependencies build-base perl curl R-dev python2-dev
+    perl -spi -e 's/# (.*)\@CRAN\@(.*)/${1}https:\/\/cloud.r-project.org\/$2/' /usr/lib/R/library/base/R/Rprofile
+    R --slave -e "update.packages(ask=FALSE)"
+    R --slave -e "install.packages('corrplot')"
+    R --slave -e "install.packages('KernSmooth')"
+    curl -SsOL https://github.com/mhammell-laboratory/ezBAMQC/archive/0.6.7.tar.gz
+    tar zxf 0.6.7.tar.gz
+    cd ezBAMQC-0.6.7
+    make
+    cp ezBAMQC /usr/bin
+    chmod +x /usr/bin/ezBAMQC
+    cp libBAMqc.so /usr/lib
+    cd ..
+    rm -rf 0.6.7.tar.gz ezBAMQC-0.6.7
+    apk del build-dependencies
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+
+%runscript
+    PYTHONPATH=/usr/lib /usr/bin/ezBAMQC "$@"
+
+%help
+    ezBAMQC - a tool to check the quality of mapped NGS files

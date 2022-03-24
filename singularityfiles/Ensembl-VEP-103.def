@@ -1,0 +1,55 @@
+Bootstrap: library
+From: iansealy/alpine/alpine311:3.11.3
+
+%labels
+    Author Ian Sealy
+    Version 103
+
+%post
+    apk --no-cache add perl perl-dbd-mysql perl-try-tiny perl-io-gzip perl-json libcurl zlib libbz2 xz-libs
+    apk --no-cache add --virtual build-dependencies build-base git perl-dev perl-module-build perl-app-cpanminus wget curl curl-dev zlib-dev bzip2-dev xz-dev bash
+    git clone -b release-1-6-924 https://github.com/bioperl/bioperl-live.git
+    mv bioperl-live/Bio* /usr/local/lib/perl5/site_perl
+    git clone -b release/103 https://github.com/Ensembl/ensembl.git
+    mv ensembl/modules/Bio/EnsEMBL /usr/local/lib/perl5/site_perl/Bio
+    git clone -b release/103 https://github.com/Ensembl/ensembl-variation.git
+    mv ensembl-variation/modules/Bio/EnsEMBL/Variation /usr/local/lib/perl5/site_perl/Bio/EnsEMBL
+    git clone -b release/103 https://github.com/Ensembl/ensembl-funcgen.git
+    mv ensembl-funcgen/modules/Bio/EnsEMBL/Funcgen /usr/local/lib/perl5/site_perl/Bio/EnsEMBL
+    git clone -b release/103 https://github.com/Ensembl/ensembl-io.git
+    mv ensembl-io/modules/Bio/EnsEMBL/IO /usr/local/lib/perl5/site_perl/Bio/EnsEMBL
+    mv ensembl-io/modules/Bio/EnsEMBL/Utils/* /usr/local/lib/perl5/site_perl/Bio/EnsEMBL/Utils
+    git clone https://github.com/Ensembl/ensembl-xs.git
+    cd ensembl-xs
+    perl Makefile.PL
+    make
+    make test
+    make install
+    cd ..
+    rm -rf bioperl-live ensembl*
+    curl -SsOL https://github.com/samtools/htslib/releases/download/1.11/htslib-1.11.tar.bz2
+    tar jxf htslib-1.11.tar.bz2
+    cd htslib-1.11
+    ./configure
+    make
+    make test
+    make install
+    cd ..
+    rm -rf htslib-1.11*
+    cpanm Bio::DB::HTS
+    cpanm Set::IntervalTree
+    cd /opt
+    git clone -b release/103 https://github.com/Ensembl/ensembl-vep.git
+    cd ensembl-vep
+    perl INSTALL.pl -a cf -c /opt/cache -l -n -s "danio_rerio"
+    apk del build-dependencies
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+
+%runscript
+    /opt/ensembl-vep/vep --species "danio_rerio" --cache --dir_cache /opt/cache "$@"
+
+%help
+    Ensembl VEP 103 - Ensembl Variant Effect Predictor

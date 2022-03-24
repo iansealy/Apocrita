@@ -1,0 +1,53 @@
+Bootstrap: library
+From: iansealy/alpine/alpine311:3.11.3
+
+%labels
+    Author Ian Sealy
+    Version 101
+
+%post
+    apk --no-cache add openjdk8-jre coreutils gawk
+    apk --no-cache add --virtual build-dependencies curl
+    mkdir -p /usr/local/share/zfa
+    cd /usr/local/share/zfa
+    curl -SsOL https://raw.githubusercontent.com/iansealy/topgo-wrapper/master/data/danio_rerio_e101_zfin.txt
+    curl -SsL https://raw.githubusercontent.com/cerivs/zebrafish-anatomical-ontology/fe7a76df2bc39cbcf7111b9a8e7400c7dab7f5d8/src/zebrafish_anatomy.obo -o zfa.obo
+    curl -SsOL http://zfin.org/downloads/archive/2020.04.29/phenoGeneCleanData_fish.txt
+    curl -SsOL http://zfin.org/downloads/archive/2020.04.29/wildtype-expression_fish.txt
+    curl -SsOL http://ontologizer.de/cmdline/Ontologizer.jar
+    cut -f3,4,8,13,17 phenoGeneCleanData_fish.txt | grep ZDB-GENE- | awk '{ print $1 "\t" $2 "\n" $1 "\t" $3 "\n" $1 "\t" $4 "\n" $1 "\t" $5 }' | grep ZFA: > zfin1.txt
+    cut -f1,4,6 wildtype-expression_fish.txt | grep ZDB-GENE- | awk '{ print $1 "\t" $2 "\n" $1 "\t" $3 }' | grep ZFA: > zfin2.txt
+    sort -u zfin1.txt zfin2.txt | awk '{ print "ZFIN\t" $1 "\t" $1 "\t\t" $2 "\tRef\tND\t\tC\t" $1 "\t\tgene_product\ttaxon:7955\t20200116\tZFIN" }' > zfin.txt
+    rm phenoGeneCleanData_fish.txt wildtype-expression_fish.txt zfin1.txt zfin2.txt
+    echo '#!/usr/bin/env sh
+count1=`cat $1 | wc -l`
+count2=`cat $2 | wc -l`
+if [ "$count1" -gt "$count2" ]; then
+  all=$1
+  sig=$2
+else
+  all=$2
+  sig=$1
+fi
+grep ENS $all | awk '"'"'{ print $1 }'"'"' | sort -u > tmp.all.ens
+grep ENS $sig | awk '"'"'{ print $1 }'"'"' | sort -u > tmp.sig.ens
+join -j1 /usr/local/share/zfa/danio_rerio_e101_zfin.txt tmp.all.ens | awk '"'"'{ print $2 }'"'"' | sort -u > tmp.all.zfin
+join -j1 /usr/local/share/zfa/danio_rerio_e101_zfin.txt tmp.sig.ens | awk '"'"'{ print $2 }'"'"' | sort -u > tmp.sig.zfin
+java -jar /usr/local/share/zfa/Ontologizer.jar --mtc Bonferroni --calculation Parent-Child-Union \
+  --association /usr/local/share/zfa/zfin.txt --go /usr/local/share/zfa/zfa.obo \
+  --population tmp.all.zfin --studyset tmp.sig.zfin
+rm tmp.all.ens tmp.sig.ens tmp.all.zfin tmp.sig.zfin
+grep -v ^ZFS: table-tmp.sig-Parent-Child-Union-Bonferroni.txt | awk -F"\t" '"'"'{ print $1 "\t" $10 "\t" $11 "\t" $13 }'"'"' > zfa.all.tsv
+grep -v ^ZFS: table-tmp.sig-Parent-Child-Union-Bonferroni.txt | awk -F"\t" '"'"'{ if ($11 < 0.05) print $1 "\t" $10 "\t" $11 "\t" $13 }'"'"' > zfa.sig.tsv' > /usr/local/bin/zfa
+    chmod a+x /usr/local/bin/zfa
+    apk del build-dependencies
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+
+%runscript
+    /usr/local/bin/zfa "$@"
+
+%help
+    ZFA - ZFA enrichment with Ontologizer

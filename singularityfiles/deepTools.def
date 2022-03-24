@@ -1,0 +1,82 @@
+Bootstrap: library
+From: iansealy/alpine/alpine311:3.11.3
+
+%labels
+    Author Ian Sealy
+    Version 3.3.2
+
+%post
+    apk --no-cache add python3 py3-numpy py3-scipy zlib libbz2 xz-libs freetype
+    apk --no-cache add --virtual build-dependencies build-base python3-dev cython py3-numpy-dev zlib-dev bzip2-dev xz-dev freetype-dev
+    pip3 install deeptools==3.3.2
+    apk del build-dependencies
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+
+%apprun alignmentSieve
+    /usr/bin/alignmentSieve "$@"
+
+%apprun bamCompare
+    /usr/bin/bamCompare "$@"
+
+%apprun bamCoverage
+    /usr/bin/bamCoverage "$@"
+
+%apprun bamPEFragmentSize
+    /usr/bin/bamPEFragmentSize "$@"
+
+%apprun bigwigCompare
+    /usr/bin/bigwigCompare "$@"
+
+%apprun computeGCBias
+    /usr/bin/computeGCBias "$@"
+
+%apprun computeMatrix
+    /usr/bin/computeMatrix "$@"
+
+%apprun computeMatrixOperations
+    /usr/bin/computeMatrixOperations "$@"
+
+%apprun correctGCBias
+    /usr/bin/correctGCBias "$@"
+
+%apprun deeptools
+    /usr/bin/deeptools "$@"
+
+%apprun estimateReadFiltering
+    /usr/bin/estimateReadFiltering "$@"
+
+%apprun estimateScaleFactor
+    /usr/bin/estimateScaleFactor "$@"
+
+%apprun multiBamSummary
+    /usr/bin/multiBamSummary "$@"
+
+%apprun multiBigwigSummary
+    /usr/bin/multiBigwigSummary "$@"
+
+%apprun plotCorrelation
+    /usr/bin/plotCorrelation "$@"
+
+%apprun plotCoverage
+    /usr/bin/plotCoverage "$@"
+
+%apprun plotEnrichment
+    /usr/bin/plotEnrichment "$@"
+
+%apprun plotFingerprint
+    /usr/bin/plotFingerprint "$@"
+
+%apprun plotHeatmap
+    /usr/bin/plotHeatmap "$@"
+
+%apprun plotPCA
+    /usr/bin/plotPCA "$@"
+
+%apprun plotProfile
+    /usr/bin/plotProfile "$@"
+
+%help
+    deepTools - tools for exploring deep sequencing data

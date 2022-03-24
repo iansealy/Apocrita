@@ -1,0 +1,3 @@
+#%Module1.0
+# WhatsHap-1.0.sif
+prepend-path PATH /data/SBBS-BuschLab/packages/WhatsHap/1.0/bin

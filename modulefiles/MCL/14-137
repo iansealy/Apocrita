@@ -1,0 +1,3 @@
+#%Module1.0
+# MCL-14-137.sif
+prepend-path PATH /data/SBBS-BuschLab/packages/MCL/14-137/bin

@@ -1,0 +1,88 @@
+Bootstrap: library
+From: iansealy/ubuntu/ubuntu1804:18.04
+
+%labels
+    Author Ian Sealy
+    Version 0.99.22
+
+%post
+    apt-get -q update
+    apt-get -q -y upgrade
+    DEBIAN_FRONTEND=noninteractive apt-get -q -y install curl build-essential gfortran tzdata \
+      texlive-latex-base texlive-fonts-extra libopenblas-base libopenblas-dev \
+      libreadline7 libreadline-dev zlib1g zlib1g-dev libbz2-1.0 libbz2-dev liblzma5 liblzma-dev \
+      libpcre2-8-0 libpcre2-16-0 libpcre2-32-0 libpcre2-posix0 libpcre2-dev \
+      libcurl4 libcurl4-openssl-dev libpng16-16 libpng-dev libjpeg8 libjpeg8-dev \
+      libtiff5 libtiff5-dev libcairo2 libcairo2-dev libicu60 libicu-dev \
+      libxml2 libxml2-dev libssl1.1 libssl-dev libncurses5-dev git cpanminus \
+      libdbd-mysql-perl libmodule-build-perl libarchive-zip-perl libperlio-gzip-perl
+    curl -SsOL https://cran.r-project.org/src/base/R-4/R-4.0.2.tar.gz
+    tar zxf R-4.0.2.tar.gz
+    cd R-4.0.2
+    ./configure --disable-java --with-blas --without-x
+    make
+    make check
+    mkdir -p /usr/local/lib/R/lib
+    make install
+    perl -spi -e 's/# (.*)\@CRAN\@(.*)/${1}https:\/\/cloud.r-project.org\/$2/' /usr/local/lib/R/library/base/R/Rprofile
+    cd ..
+    rm -rf R-4.0.2*
+    R --slave -e "update.packages(ask=FALSE)"
+    R --slave -e "install.packages('devtools')"
+    R --slave -e "devtools::install_github('kjohnsen/MMAPPR2@06ef8906ba70d650af588cc2ba845d9068746259')"
+    curl -SsOL https://github.com/samtools/samtools/releases/download/1.11/samtools-1.11.tar.bz2
+    tar jxf samtools-1.11.tar.bz2
+    cd samtools-1.11
+    ./configure
+    make
+    make test
+    make install
+    cd ..
+    rm -rf samtools-1.11*
+    curl -SsOL https://github.com/samtools/htslib/releases/download/1.11/htslib-1.11.tar.bz2
+    tar jxf htslib-1.11.tar.bz2
+    cd htslib-1.11
+    ./configure
+    make
+    make test
+    make install
+    cd ..
+    rm -rf htslib-1.11*
+    perlv=`perl -e 'print $^V' | sed -e 's/^v//'`
+    mkdir -p /usr/local/share/perl/$perlv
+    git clone -b release-1-6-924 https://github.com/bioperl/bioperl-live.git
+    mv bioperl-live/Bio* /usr/local/share/perl/$perlv
+    git clone -b release/101 https://github.com/Ensembl/ensembl.git
+    mv ensembl/modules/Bio/EnsEMBL /usr/local/share/perl/$perlv/Bio
+    git clone -b release/101 https://github.com/Ensembl/ensembl-io.git
+    mv ensembl-io/modules/EnsEMBL /usr/local/share/perl/$perlv
+    mv ensembl-io/modules/Bio/EnsEMBL/IO /usr/local/share/perl/$perlv/Bio/EnsEMBL
+    mv ensembl-io/modules/Bio/EnsEMBL/Utils/* /usr/local/share/perl/$perlv/Bio/EnsEMBL/Utils
+    git clone -b release/101 https://github.com/Ensembl/ensembl-variation.git
+    mv ensembl-variation/modules/Bio/EnsEMBL/Variation /usr/local/share/perl/$perlv/Bio/EnsEMBL
+    git clone -b release/101 https://github.com/Ensembl/ensembl-funcgen.git
+    mv ensembl-funcgen/modules/Bio/EnsEMBL/Funcgen /usr/local/share/perl/$perlv/Bio/EnsEMBL
+    rm -rf bioperl-live ensembl ensembl-io ensembl-variation ensembl-funcgen
+    cpanm Bio::DB::HTS
+    cd /usr/local
+    git clone -b release/101 https://github.com/Ensembl/ensembl-vep.git
+    apt-get -q -y purge texlive-fonts-extra
+    apt-get -q -y clean
+    rm -rf /var/lib/apt/lists/*
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+    export PATH="/usr/local/ensembl-vep:$PATH"
+
+%runscript
+    /usr/local/bin/R "$@"
+
+%apprun R
+    /usr/local/bin/R "$@"
+
+%apprun Rscript
+    /usr/local/bin/Rscript "$@"
+
+%help
+    MMAPPR2 - Mutation mapping analysis pipeline for pooled RNA-seq

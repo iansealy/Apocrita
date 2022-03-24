@@ -1,0 +1,34 @@
+Bootstrap: library
+From: iansealy/alpine/alpine315:3.15.0
+
+%labels
+    Author Ian Sealy
+    Version 5.43.0
+
+%post
+    apk --no-cache add perl perl-list-moreutils perl-readonly perl-path-tiny perl-strictures perl-sereal perl-dbi perl-dbd-mysql perl-try-tiny perl-moo perl-type-tiny
+    apk --no-cache add --virtual build-dependencies build-base git wget perl-dev perl-app-cpanminus
+    git clone -b release-1-6-924 https://github.com/bioperl/bioperl-live.git
+    mv bioperl-live/Bio* /usr/local/lib/perl5/site_perl
+    rm -rf bioperl-live
+    cpanm indirect multidimensional bareword::filehandles
+    apk del build-dependencies
+    echo '#!/usr/bin/env sh
+if [ -d "$HOME/perl5.43.0" ]; then
+  perl -I$HOME/perl5.43.0 "$@"
+elif [ -d "$HOME/perl5" ]; then
+  perl -I$HOME/perl5 "$@"
+else
+  perl "$@"
+fi' > /usr/bin/wrapper
+    chmod +x /usr/bin/wrapper
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+
+%runscript
+    /usr/bin/wrapper "$@"
+
+%help
+    Perl - Perl interpreter, plus some modules

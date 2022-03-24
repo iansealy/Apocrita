@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+/usr/bin/singularity run --bind /data --app mcxload /data/SBBS-BuschLab/containers/MCL-14-137.sif "$@"

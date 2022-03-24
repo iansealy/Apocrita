@@ -1,0 +1,174 @@
+Bootstrap: library
+From: iansealy/alpine/alpine311:3.11.3
+
+%labels
+    Author Ian Sealy
+    Version 2.4.0
+
+%post
+    apk --no-cache add openjdk8-jre libc6-compat bash libcurl ncurses-libs zlib libbz2 xz-libs
+    apk --no-cache add --virtual build-dependencies build-base curl curl-dev ncurses-dev zlib-dev bzip2-dev xz-dev perl
+    ln -s /lib/libc.musl-x86_64.so.1 /lib/ld-linux-x86-64.so.2
+    curl -SsOL https://github.com/broadinstitute/Drop-seq/releases/download/v2.4.0/Drop-seq_tools-2.4.0.zip
+    unzip Drop-seq_tools-2.4.0.zip
+    mv Drop-seq_tools-2.4.0 /opt/Drop-seq_tools
+    rm Drop-seq_tools-2.4.0.zip
+    curl -SsOL https://github.com/alexdobin/STAR/archive/2.7.3a.tar.gz
+    tar zxf 2.7.3a.tar.gz
+    cp STAR-2.7.3a/bin/Linux_x86_64_static/STAR /usr/local/bin
+    rm -rf 2.7.3a.tar.gz STAR-2.7.3a
+    curl -SsOL https://github.com/samtools/htslib/releases/download/1.11/htslib-1.11.tar.bz2
+    tar jxf htslib-1.11.tar.bz2
+    cd htslib-1.11
+    ./configure
+    make
+    make test
+    make install
+    cd ..
+    rm -rf htslib-1.11*
+    curl -SsOL https://github.com/samtools/samtools/releases/download/1.11/samtools-1.11.tar.bz2
+    tar jxf samtools-1.11.tar.bz2
+    cd samtools-1.11
+    ./configure
+    make
+    make test
+    make install
+    cd ..
+    rm -rf samtools-1.11*
+    apk del build-dependencies
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+
+%apprun BamTagHistogram
+    /opt/Drop-seq_tools/BamTagHistogram "$@"
+
+%apprun BamTagOfTagCounts
+    /opt/Drop-seq_tools/BamTagOfTagCounts "$@"
+
+%apprun BaseDistributionAtReadPosition
+    /opt/Drop-seq_tools/BaseDistributionAtReadPosition "$@"
+
+%apprun CensusSeq
+    /opt/Drop-seq_tools/CensusSeq "$@"
+
+%apprun CollapseBarcodesInPlace
+    /opt/Drop-seq_tools/CollapseBarcodesInPlace "$@"
+
+%apprun CollapseTagWithContext
+    /opt/Drop-seq_tools/CollapseTagWithContext "$@"
+
+%apprun CompareDropSeqAlignments
+    /opt/Drop-seq_tools/CompareDropSeqAlignments "$@"
+
+%apprun ComputeUMISharing
+    /opt/Drop-seq_tools/ComputeUMISharing "$@"
+
+%apprun ConvertTagToReadGroup
+    /opt/Drop-seq_tools/ConvertTagToReadGroup "$@"
+
+%apprun ConvertToRefFlat
+    /opt/Drop-seq_tools/ConvertToRefFlat "$@"
+
+%apprun CountUnmatchedSampleIndices
+    /opt/Drop-seq_tools/CountUnmatchedSampleIndices "$@"
+
+%apprun createDropseqreferencemetadata
+    /opt/Drop-seq_tools/create_Drop-seq_reference_metadata.sh "$@"
+
+%apprun CreateIntervalsFiles
+    /opt/Drop-seq_tools/CreateIntervalsFiles "$@"
+
+%apprun CreateSnpIntervalFromVcf
+    /opt/Drop-seq_tools/CreateSnpIntervalFromVcf "$@"
+
+%apprun CsiAnalysis
+    /opt/Drop-seq_tools/CsiAnalysis "$@"
+
+%apprun DetectBeadSubstitutionErrors
+    /opt/Drop-seq_tools/DetectBeadSubstitutionErrors "$@"
+
+%apprun DetectBeadSynthesisErrors
+    /opt/Drop-seq_tools/DetectBeadSynthesisErrors "$@"
+
+%apprun DigitalExpression
+    /opt/Drop-seq_tools/DigitalExpression "$@"
+
+%apprun DownsampleBamByTag
+    /opt/Drop-seq_tools/DownsampleBamByTag "$@"
+
+%apprun Dropseqalignment
+    /opt/Drop-seq_tools/Drop-seq_alignment.sh "$@"
+
+%apprun FilterBam
+    /opt/Drop-seq_tools/FilterBam "$@"
+
+%apprun FilterBamByTag
+    /opt/Drop-seq_tools/FilterBamByTag "$@"
+
+%apprun FilterGtf
+    /opt/Drop-seq_tools/FilterGtf "$@"
+
+%apprun GatherGeneGCLength
+    /opt/Drop-seq_tools/GatherGeneGCLength "$@"
+
+%apprun GatherMolecularBarcodeDistributionByGene
+    /opt/Drop-seq_tools/GatherMolecularBarcodeDistributionByGene "$@"
+
+%apprun GatherReadQualityMetrics
+    /opt/Drop-seq_tools/GatherReadQualityMetrics "$@"
+
+%apprun GenotypeSperm
+    /opt/Drop-seq_tools/GenotypeSperm "$@"
+
+%apprun MaskReferenceSequence
+    /opt/Drop-seq_tools/MaskReferenceSequence "$@"
+
+%apprun MergeDgeSparse
+    /opt/Drop-seq_tools/MergeDgeSparse "$@"
+
+%apprun PolyATrimmer
+    /opt/Drop-seq_tools/PolyATrimmer "$@"
+
+%apprun ReduceGtf
+    /opt/Drop-seq_tools/ReduceGtf "$@"
+
+%apprun RollCall
+    /opt/Drop-seq_tools/RollCall "$@"
+
+%apprun SelectCellsByNumTranscripts
+    /opt/Drop-seq_tools/SelectCellsByNumTranscripts "$@"
+
+%apprun SingleCellRnaSeqMetricsCollector
+    /opt/Drop-seq_tools/SingleCellRnaSeqMetricsCollector "$@"
+
+%apprun SpermSeqMarkDuplicates
+    /opt/Drop-seq_tools/SpermSeqMarkDuplicates "$@"
+
+%apprun SplitBamByCell
+    /opt/Drop-seq_tools/SplitBamByCell "$@"
+
+%apprun TagBam
+    /opt/Drop-seq_tools/TagBam "$@"
+
+%apprun TagBamWithReadSequenceExtended
+    /opt/Drop-seq_tools/TagBamWithReadSequenceExtended "$@"
+
+%apprun TagReadWithGeneExonFunction
+    /opt/Drop-seq_tools/TagReadWithGeneExonFunction "$@"
+
+%apprun TagReadWithGeneFunction
+    /opt/Drop-seq_tools/TagReadWithGeneFunction "$@"
+
+%apprun TagReadWithInterval
+    /opt/Drop-seq_tools/TagReadWithInterval "$@"
+
+%apprun TrimStartingSequence
+    /opt/Drop-seq_tools/TrimStartingSequence "$@"
+
+%apprun ValidateReference
+    /opt/Drop-seq_tools/ValidateReference "$@"
+
+%help
+    Drop-seq_tools - Java tools for analyzing Drop-seq data

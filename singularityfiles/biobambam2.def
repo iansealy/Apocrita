@@ -1,0 +1,255 @@
+Bootstrap: library
+From: iansealy/ubuntu/ubuntu1804:18.04
+
+%labels
+    Author Ian Sealy
+    Version 2.0.146
+
+%post
+
+    apt-get -q update
+    apt-get -q -y upgrade
+    DEBIAN_FRONTEND=noninteractive apt-get -q -y install curl xz-utils
+    curl -SsOL https://gitlab.com/german.tischler/biobambam2/uploads/178774a8ece96d2201fcd0b5249884c7/biobambam2-2.0.146-release-20191030105216-x86_64-linux-gnu.tar.xz
+    tar xf biobambam2-2.0.146-release-20191030105216-x86_64-linux-gnu.tar.xz
+    mv biobambam2/x86_64-linux-gnu/2.0.146/bin/* /usr/local/bin
+    mv biobambam2/x86_64-linux-gnu/2.0.146/lib/* /usr/local/lib
+    mv biobambam2/x86_64-linux-gnu/2.0.146/share/* /usr/local/share
+    chown -R root: /usr/local
+    rm -rf biobambam2
+    apt-get -q -y purge curl xz-utils
+    apt-get -q -y autoremove
+    apt-get -q -y clean
+    rm -rf /var/lib/apt/lists/*
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+
+%apprun bam12auxmerge
+    /usr/local/bin/bam12auxmerge "$@"
+
+%apprun bam12split
+    /usr/local/bin/bam12split "$@"
+
+%apprun bam12strip
+    /usr/local/bin/bam12strip "$@"
+
+%apprun bamadapterclip
+    /usr/local/bin/bamadapterclip "$@"
+
+%apprun bamadapterfind
+    /usr/local/bin/bamadapterfind "$@"
+
+%apprun bamalignfrac
+    /usr/local/bin/bamalignfrac "$@"
+
+%apprun bamauxmerge
+    /usr/local/bin/bamauxmerge "$@"
+
+%apprun bamauxmerge2
+    /usr/local/bin/bamauxmerge2 "$@"
+
+%apprun bamauxsort
+    /usr/local/bin/bamauxsort "$@"
+
+%apprun bamcat
+    /usr/local/bin/bamcat "$@"
+
+%apprun bamchecksort
+    /usr/local/bin/bamchecksort "$@"
+
+%apprun bamclipXT
+    /usr/local/bin/bamclipXT "$@"
+
+%apprun bamclipreinsert
+    /usr/local/bin/bamclipreinsert "$@"
+
+%apprun bamcollate2
+    /usr/local/bin/bamcollate2 "$@"
+
+%apprun bamdepth
+    /usr/local/bin/bamdepth "$@"
+
+%apprun bamdepthintersect
+    /usr/local/bin/bamdepthintersect "$@"
+
+%apprun bamdownsamplerandom
+    /usr/local/bin/bamdownsamplerandom "$@"
+
+%apprun bamexplode
+    /usr/local/bin/bamexplode "$@"
+
+%apprun bamexploderef
+    /usr/local/bin/bamexploderef "$@"
+
+%apprun bamfastcat
+    /usr/local/bin/bamfastcat "$@"
+
+%apprun bamfastexploderef
+    /usr/local/bin/bamfastexploderef "$@"
+
+%apprun bamfastnumextract
+    /usr/local/bin/bamfastnumextract "$@"
+
+%apprun bamfastsplit
+    /usr/local/bin/bamfastsplit "$@"
+
+%apprun bamfeaturecount
+    /usr/local/bin/bamfeaturecount "$@"
+
+%apprun bamfillquery
+    /usr/local/bin/bamfillquery "$@"
+
+%apprun bamfilteraux
+    /usr/local/bin/bamfilteraux "$@"
+
+%apprun bamfiltereofblocks
+    /usr/local/bin/bamfiltereofblocks "$@"
+
+%apprun bamfilterflags
+    /usr/local/bin/bamfilterflags "$@"
+
+%apprun bamfilterheader
+    /usr/local/bin/bamfilterheader "$@"
+
+%apprun bamfilterheader2
+    /usr/local/bin/bamfilterheader2 "$@"
+
+%apprun bamfilterk
+    /usr/local/bin/bamfilterk "$@"
+
+%apprun bamfilterlength
+    /usr/local/bin/bamfilterlength "$@"
+
+%apprun bamfiltermc
+    /usr/local/bin/bamfiltermc "$@"
+
+%apprun bamfilternames
+    /usr/local/bin/bamfilternames "$@"
+
+%apprun bamfilterrefid
+    /usr/local/bin/bamfilterrefid "$@"
+
+%apprun bamfilterrg
+    /usr/local/bin/bamfilterrg "$@"
+
+%apprun bamfixmateinformation
+    /usr/local/bin/bamfixmateinformation "$@"
+
+%apprun bamfixpairinfo
+    /usr/local/bin/bamfixpairinfo "$@"
+
+%apprun bamflagsplit
+    /usr/local/bin/bamflagsplit "$@"
+
+%apprun bamindex
+    /usr/local/bin/bamindex "$@"
+
+%apprun bamintervalcomment
+    /usr/local/bin/bamintervalcomment "$@"
+
+%apprun bamintervalcommenthist
+    /usr/local/bin/bamintervalcommenthist "$@"
+
+%apprun bammapdist
+    /usr/local/bin/bammapdist "$@"
+
+%apprun bammarkduplicates
+    /usr/local/bin/bammarkduplicates "$@"
+
+%apprun bammarkduplicates2
+    /usr/local/bin/bammarkduplicates2 "$@"
+
+%apprun bammarkduplicatesopt
+    /usr/local/bin/bammarkduplicatesopt "$@"
+
+%apprun bammaskflags
+    /usr/local/bin/bammaskflags "$@"
+
+%apprun bammdnm
+    /usr/local/bin/bammdnm "$@"
+
+%apprun bammerge
+    /usr/local/bin/bammerge "$@"
+
+%apprun bamnumericalindex
+    /usr/local/bin/bamnumericalindex "$@"
+
+%apprun bamnumericalindexstats
+    /usr/local/bin/bamnumericalindexstats "$@"
+
+%apprun bamrank
+    /usr/local/bin/bamrank "$@"
+
+%apprun bamranksort
+    /usr/local/bin/bamranksort "$@"
+
+%apprun bamrecalculatecigar
+    /usr/local/bin/bamrecalculatecigar "$@"
+
+%apprun bamrecompress
+    /usr/local/bin/bamrecompress "$@"
+
+%apprun bamrefextract
+    /usr/local/bin/bamrefextract "$@"
+
+%apprun bamrefinterval
+    /usr/local/bin/bamrefinterval "$@"
+
+%apprun bamreheader
+    /usr/local/bin/bamreheader "$@"
+
+%apprun bamreplacechecksums
+    /usr/local/bin/bamreplacechecksums "$@"
+
+%apprun bamreset
+    /usr/local/bin/bamreset "$@"
+
+%apprun bamscrapcount
+    /usr/local/bin/bamscrapcount "$@"
+
+%apprun bamseqchksum
+    /usr/local/bin/bamseqchksum "$@"
+
+%apprun bamsormadup
+    /usr/local/bin/bamsormadup "$@"
+
+%apprun bamsort
+    /usr/local/bin/bamsort "$@"
+
+%apprun bamsplit
+    /usr/local/bin/bamsplit "$@"
+
+%apprun bamsplitdiv
+    /usr/local/bin/bamsplitdiv "$@"
+
+%apprun bamstreamingmarkduplicates
+    /usr/local/bin/bamstreamingmarkduplicates "$@"
+
+%apprun bamtofastq
+    /usr/local/bin/bamtofastq "$@"
+
+%apprun bamvalidate
+    /usr/local/bin/bamvalidate "$@"
+
+%apprun bamzztoname
+    /usr/local/bin/bamzztoname "$@"
+
+%apprun fastaexplod
+    /usr/local/bin/fastaexplod "$@"
+
+%apprun fastqtobam
+    /usr/local/bin/fastqtobam "$@"
+
+%apprun fastqtobam2
+    /usr/local/bin/fastqtobam2 "$@"
+
+%apprun normalisefasta
+    /usr/local/bin/normalisefasta "$@"
+
+%apprun populaterefcache
+    /usr/local/bin/populaterefcache "$@"
+
+%help
+    biobambam2 - tools for early stage alignment file processing

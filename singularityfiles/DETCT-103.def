@@ -1,0 +1,127 @@
+Bootstrap: library
+From: iansealy/ubuntu/ubuntu1804:18.04
+
+%labels
+    Author Ian Sealy
+    Version 0.2.2
+
+%post
+    apt-get -q update
+    apt-get -q -y upgrade
+    DEBIAN_FRONTEND=noninteractive apt-get -q -y install curl build-essential gfortran tzdata \
+      texlive-latex-base texlive-fonts-extra libopenblas-base libopenblas-dev \
+      libreadline7 libreadline-dev zlib1g zlib1g-dev libbz2-1.0 libbz2-dev liblzma5 liblzma-dev \
+      libpcre2-8-0 libpcre2-16-0 libpcre2-32-0 libpcre2-posix0 libpcre2-dev \
+      libcurl4 libcurl4-openssl-dev libpng16-16 libpng-dev libjpeg8 libjpeg8-dev \
+      libtiff5 libtiff5-dev libcairo2 libcairo2-dev libicu60 libicu-dev \
+      libxml2 libxml2-dev libssl1.1 libssl-dev tcl tcl-dev tk tk-dev \
+      libncurses5-dev libncursesw5-dev libdbd-mysql-perl openjdk-8-jre \
+      git cpanminus libsort-naturally-perl libprobe-perl-perl \
+      libclass-insideout-perl libyaml-tiny-perl libdata-compare-perl libmath-derivative-perl \
+      libfile-readbackwards-perl libyaml-perl libtest-most-perl libtest-exception-perl \
+      libsub-uplevel-perl libexception-class-perl libdevel-stacktrace-perl \
+      libclass-data-inheritable-perl libtest-deep-perl libtest-warn-perl libtest-differences-perl \
+      libcapture-tiny-perl libtext-diff-perl libtext-csv-perl libclone-choose-perl \
+      libtest-without-module-perl
+    curl -SsOL https://cran.r-project.org/src/base/R-4/R-4.0.2.tar.gz
+    tar zxf R-4.0.2.tar.gz
+    cd R-4.0.2
+    ./configure --disable-java --with-blas --without-x
+    make
+    make check
+    mkdir -p /usr/local/lib/R/lib
+    make install
+    perl -spi -e 's/# (.*)\@CRAN\@(.*)/${1}https:\/\/cloud.r-project.org\/$2/' /usr/local/lib/R/library/base/R/Rprofile
+    cd ..
+    rm -rf R-4.0.2*
+    R --slave -e "update.packages(ask=FALSE)"
+    R --slave -e "install.packages('BiocManager')"
+    R --slave -e "BiocManager::install()"
+    R --slave -e "BiocManager::install('DESeq2')"
+    R --slave -e "BiocManager::install('Mfuzz')"
+    R --slave -e "install.packages('pheatmap')"
+    R --slave -e "install.packages('naturalsort')"
+    R --slave -e "install.packages('gplots')"
+    R --slave -e "install.packages('RColorBrewer')"
+    R --slave -e "install.packages('ggplot2')"
+    R --slave -e "install.packages('reshape2')"
+    R --slave -e "install.packages('dplyr')"
+    R --slave -e "remove.packages('BH')"
+    mkdir -p /usr/local/lib/site_perl
+    git clone -b release-1-6-924 https://github.com/bioperl/bioperl-live.git
+    mv bioperl-live/Bio* /usr/local/lib/site_perl
+    git clone -b release/103 https://github.com/Ensembl/ensembl.git
+    mv ensembl/modules/Bio/EnsEMBL /usr/local/lib/site_perl/Bio
+    git clone -b release/103 https://github.com/Ensembl/ensembl-compara.git
+    mv ensembl-compara/modules/Bio/EnsEMBL/Compara /usr/local/lib/site_perl/Bio/EnsEMBL
+    rm -rf bioperl-live ensembl ensembl-compara
+    curl -SsOL https://github.com/samtools/htslib/releases/download/1.11/htslib-1.11.tar.bz2
+    tar jxf htslib-1.11.tar.bz2
+    cd htslib-1.11
+    ./configure
+    make
+    make test
+    make install
+    cd ..
+    rm -rf htslib-1.11*
+    curl -SsOL https://github.com/samtools/samtools/releases/download/1.11/samtools-1.11.tar.bz2
+    tar jxf samtools-1.11.tar.bz2
+    cd samtools-1.11
+    ./configure
+    make
+    make test
+    make install
+    cd ..
+    rm -rf samtools-1.11*
+    curl -SsOL http://ftp.ebi.ac.uk/pub/software/vertebrategenomics/exonerate/exonerate-2.4.0.tar.gz
+    tar zxf exonerate-2.4.0.tar.gz
+    cd exonerate-2.4.0
+    ./configure
+    make
+    make check
+    make install
+    cd ..
+    rm -rf exonerate-2.4.0*
+    curl -SsOL http://csg.sph.umich.edu/qin/HPeak/HPeak-2.1.LINUX.tar.gz
+    tar zxf HPeak-2.1.LINUX.tar.gz
+    cd HPeak-2.1
+    g++ -o chiphmmnew chiphmmnew.cpp
+    cp chiphmmnew /usr/local/bin
+    cd ..
+    rm -rf HPeak-2.1*
+    curl -SsOL ftp://ftp.sanger.ac.uk/pub/resources/software/ssaha2/ssaha2_v2.5.5_x86_64.tgz
+    tar zxf ssaha2_v2.5.5_x86_64.tgz
+    cd ssaha2_v2.5.5_x86_64
+    cp ssaha2 ssaha2Build ssahaSNP /usr/local/bin
+    cd ..
+    rm -rf ssaha2_v2.5.5_x86_64*
+    cpanm Bio::DB::HTS
+    cpanm JSON
+    cpanm Number::Closest::XS
+    cpanm Hash::Merge
+    curl -SsOL https://github.com/iansealy/DETCT/releases/download/v0.2.2/DETCT-0.2.2.tar.gz
+    tar zxf DETCT-0.2.2.tar.gz
+    rm DETCT-0.2.2.tar.gz
+    mv DETCT-0.2.2 DETCT
+    curl -SsOL https://github.com/iansealy/picard-detct/releases/download/v1.110-detct/picard-tools-1.110-detct.zip
+    unzip picard-tools-1.110-detct.zip
+    mv picard-tools-1.110-detct DETCT
+    rm picard-tools-1.110-detct.zip
+    cp -r DETCT /usr/local
+    rm -rf DETCT
+    apt-get -q -y purge texlive-fonts-extra git cpanminus build-essential gfortran \
+      libopenblas-dev libreadline-dev zlib1g-dev libbz2-dev liblzma-dev libpcre2-dev \
+      libcurl4-openssl-dev libpng-dev libjpeg8-dev libtiff5-dev libcairo2-dev libicu-dev \
+      libxml2-dev libssl-dev tcl-dev tk-dev libncurses5-dev libncursesw5-dev
+    apt-get -q -y clean
+    rm -rf /var/lib/apt/lists/*
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+
+%runscript
+    /usr/bin/perl -I/usr/local/DETCT/lib /usr/local/DETCT/script/run_de_pipeline.pl "$@"
+
+%help
+    DETCT 103 - Differential Expression Transcript Counting Technique

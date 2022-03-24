@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+/usr/bin/singularity run --bind /data --app bamrefextract /data/SBBS-BuschLab/containers/biobambam2-2.0.146.sif "$@"

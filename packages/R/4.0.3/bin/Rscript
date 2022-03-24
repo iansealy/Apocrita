@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+/usr/bin/singularity run --bind /data --app Rscript /data/SBBS-BuschLab/containers/R-4.0.3.sif "$@"

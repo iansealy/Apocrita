@@ -1,0 +1,108 @@
+Bootstrap: library
+From: iansealy/alpine/alpine311:3.11.3
+
+%labels
+    Author Ian Sealy
+    Version 2.4.0
+
+%post
+    apk --no-cache add glib
+    apk --no-cache add --virtual build-dependencies build-base curl pkgconf glib-dev
+    curl -SsOL http://ftp.ebi.ac.uk/pub/software/vertebrategenomics/exonerate/exonerate-2.4.0.tar.gz
+    tar zxf exonerate-2.4.0.tar.gz
+    cd exonerate-2.4.0
+    ./configure
+    make
+    make check
+    make install
+    cd ..
+    rm -rf exonerate-2.4.0*
+    apk del build-dependencies
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+
+%runscript
+    /usr/local/bin/exonerate "$@"
+
+%apprun esd2esi
+    /usr/local/bin/esd2esi "$@"
+
+%apprun exonerateserver
+    /usr/local/bin/exonerate-server "$@"
+
+%apprun fasta2esd
+    /usr/local/bin/fasta2esd "$@"
+
+%apprun fastaannotatecdna
+    /usr/local/bin/fastaannotatecdna "$@"
+
+%apprun fastachecksum
+    /usr/local/bin/fastachecksum "$@"
+
+%apprun fastaclean
+    /usr/local/bin/fastaclean "$@"
+
+%apprun fastaclip
+    /usr/local/bin/fastaclip "$@"
+
+%apprun fastacomposition
+    /usr/local/bin/fastacomposition "$@"
+
+%apprun fastadiff
+    /usr/local/bin/fastadiff "$@"
+
+%apprun fastaexplode
+    /usr/local/bin/fastaexplode "$@"
+
+%apprun fastafetch
+    /usr/local/bin/fastafetch "$@"
+
+%apprun fastahardmask
+    /usr/local/bin/fastahardmask "$@"
+
+%apprun fastaindex
+    /usr/local/bin/fastaindex "$@"
+
+%apprun fastalength
+    /usr/local/bin/fastalength "$@"
+
+%apprun fastanrdb
+    /usr/local/bin/fastanrdb "$@"
+
+%apprun fastaoverlap
+    /usr/local/bin/fastaoverlap "$@"
+
+%apprun fastareformat
+    /usr/local/bin/fastareformat "$@"
+
+%apprun fastaremove
+    /usr/local/bin/fastaremove "$@"
+
+%apprun fastarevcomp
+    /usr/local/bin/fastarevcomp "$@"
+
+%apprun fastasoftmask
+    /usr/local/bin/fastasoftmask "$@"
+
+%apprun fastasort
+    /usr/local/bin/fastasort "$@"
+
+%apprun fastasplit
+    /usr/local/bin/fastasplit "$@"
+
+%apprun fastasubseq
+    /usr/local/bin/fastasubseq "$@"
+
+%apprun fastatranslate
+    /usr/local/bin/fastatranslate "$@"
+
+%apprun fastavalidcds
+    /usr/local/bin/fastavalidcds "$@"
+
+%apprun ipcress
+    /usr/local/bin/ipcress "$@"
+
+%help
+    Exonerate - a generic tool for sequence alignment

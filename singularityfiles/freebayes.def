@@ -1,0 +1,24 @@
+Bootstrap: library
+From: iansealy/alpine/alpine311:3.11.3
+
+%labels
+    Author Ian Sealy
+    Version 1.3.4
+
+%post
+    apk --no-cache add --virtual build-dependencies curl
+    curl -SsOL https://github.com/freebayes/freebayes/releases/download/v1.3.4/freebayes-1.3.4-linux-static-AMD64.gz
+    gunzip freebayes-1.3.4-linux-static-AMD64.gz
+    chmod +x freebayes-1.3.4-linux-static-AMD64
+    mv freebayes-1.3.4-linux-static-AMD64 /usr/local/bin/freebayes
+    apk del build-dependencies
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+
+%runscript
+    /usr/local/bin/freebayes "$@"
+
+%help
+    freebayes - Bayesian haplotype-based genetic polymorphism discovery and genotyping

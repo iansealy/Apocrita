@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+/usr/bin/singularity run --bind /data /data/SBBS-BuschLab/containers/SAMtools-1.11.sif "$@"

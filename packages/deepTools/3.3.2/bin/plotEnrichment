@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+/usr/bin/singularity run --bind /data --app plotEnrichment /data/SBBS-BuschLab/containers/deepTools-3.3.2.sif "$@"

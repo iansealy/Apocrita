@@ -1,0 +1,30 @@
+Bootstrap: library
+From: iansealy/alpine/alpine311:3.11.3
+
+%labels
+    Author Ian Sealy
+    Version 1.11
+
+%post
+    apk --no-cache add libcurl ncurses-libs zlib libbz2 xz-libs perl
+    apk --no-cache add --virtual build-dependencies build-base curl curl-dev ncurses-dev zlib-dev bzip2-dev xz-dev perl-dev bash
+    curl -SsOL https://github.com/samtools/bcftools/releases/download/1.11/bcftools-1.11.tar.bz2
+    tar jxf bcftools-1.11.tar.bz2
+    cd bcftools-1.11
+    ./configure --enable-perl-filters
+    make
+    make test
+    make install
+    cd ..
+    rm -rf bcftools-1.11*
+    apk del build-dependencies
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+
+%runscript
+    /usr/local/bin/bcftools "$@"
+
+%help
+    BCFtools - reading/writing BCF2/VCF/gVCF files and calling/filtering/summarising SNP and short indel sequence variants

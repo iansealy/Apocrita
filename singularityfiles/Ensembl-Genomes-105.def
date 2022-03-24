@@ -1,0 +1,54 @@
+Bootstrap: library
+From: iansealy/alpine/alpine311:3.11.3
+
+%labels
+    Author Ian Sealy
+    Version 105
+
+%post
+    apk --no-cache add perl perl-dbd-mysql perl-try-tiny perl-uri perl-config-inifiles perl-list-moreutils perl-path-tiny perl-readonly perl-json libcurl ncurses-libs zlib libbz2 xz-libs
+    apk --no-cache add --virtual build-dependencies build-base git perl-dev perl-module-build perl-app-cpanminus wget curl curl-dev ncurses-dev zlib-dev bzip2-dev xz-dev bash
+    git clone -b release-1-6-924 https://github.com/bioperl/bioperl-live.git
+    mv bioperl-live/Bio* /usr/local/lib/perl5/site_perl
+    git clone -b release/105 https://github.com/Ensembl/ensembl.git
+    mv ensembl/modules/Bio/EnsEMBL /usr/local/lib/perl5/site_perl/Bio
+    git clone -b release/105 https://github.com/Ensembl/ensembl-compara.git
+    mv ensembl-compara/modules/Bio/EnsEMBL/Compara /usr/local/lib/perl5/site_perl/Bio/EnsEMBL
+    git clone https://github.com/Ensembl/ensembl-taxonomy.git
+    mv ensembl-taxonomy/modules/Bio/EnsEMBL/Taxonomy /usr/local/lib/perl5/site_perl/Bio/EnsEMBL
+    git clone -b release/105 https://github.com/Ensembl/ensembl-metadata.git
+    mv ensembl-metadata/modules/Bio/EnsEMBL/MetaData /usr/local/lib/perl5/site_perl/Bio/EnsEMBL
+    mv ensembl-metadata/modules/Bio/EnsEMBL/LookUp* /usr/local/lib/perl5/site_perl/Bio/EnsEMBL
+    mv ensembl-metadata/modules/Bio/EnsEMBL/Utils/* /usr/local/lib/perl5/site_perl/Bio/EnsEMBL/Utils
+    rm -rf bioperl-live ensembl ensembl-compara ensembl-taxonomy ensembl-metadata
+    curl -SsOL https://github.com/samtools/htslib/releases/download/1.11/htslib-1.11.tar.bz2
+    tar jxf htslib-1.11.tar.bz2
+    cd htslib-1.11
+    ./configure
+    make
+    make test
+    make install
+    cd ..
+    rm -rf htslib-1.11*
+    cpanm Bio::DB::HTS
+    cpanm Sort::Naturally
+    apk del build-dependencies
+    echo '#!/usr/bin/env sh
+if [ -d "$HOME/perl5-ensembl-105" ]; then
+  perl -I$HOME/perl5-ensembl-105 "$@"
+elif [ -d "$HOME/perl5" ]; then
+  perl -I$HOME/perl5 "$@"
+else
+  perl "$@"
+fi' > /usr/bin/wrapper
+    chmod +x /usr/bin/wrapper
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+
+%runscript
+    /usr/bin/wrapper "$@"
+
+%help
+    Ensembl Genomes 105 - Ensembl Perl API, plus other Perl modules

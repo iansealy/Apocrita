@@ -1,0 +1,79 @@
+Bootstrap: library
+From: iansealy/ubuntu/ubuntu1804:18.04
+
+%labels
+    Author Ian Sealy
+    Version 394
+
+%post
+    apt-get -q update
+    apt-get -q -y upgrade
+    apt-get -q -y install rsync libkrb5-3
+    for file in bedGraphPack bedGraphToBigWig bedToBigBed bigBedInfo bigBedNamedItems bigBedSummary bigBedToBed bigWigAverageOverBed bigWigCat bigWigCluster bigWigCorrelate bigWigInfo bigWigMerge bigWigSummary bigWigToBedGraph bigWigToWig fetchChromSizes wigToBigWig; do
+      rsync -aP rsync://hgdownload.soe.ucsc.edu/genome/admin/exe/linux.x86_64/$file /usr/local/bin/$file
+    done
+    apt-get -q -y purge rsync
+    apt-get -q -y autoremove
+    apt-get -q -y clean
+    rm -rf /var/lib/apt/lists/*
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+
+%apprun bedGraphPack
+    /usr/local/bin/bedGraphPack "$@"
+
+%apprun bedGraphToBigWig
+    /usr/local/bin/bedGraphToBigWig "$@"
+
+%apprun bedToBigBed
+    /usr/local/bin/bedToBigBed "$@"
+
+%apprun bigBedInfo
+    /usr/local/bin/bigBedInfo "$@"
+
+%apprun bigBedNamedItems
+    /usr/local/bin/bigBedNamedItems "$@"
+
+%apprun bigBedSummary
+    /usr/local/bin/bigBedSummary "$@"
+
+%apprun bigBedToBed
+    /usr/local/bin/bigBedToBed "$@"
+
+%apprun bigWigAverageOverBed
+    /usr/local/bin/bigWigAverageOverBed "$@"
+
+%apprun bigWigCat
+    /usr/local/bin/bigWigCat "$@"
+
+%apprun bigWigCluster
+    /usr/local/bin/bigWigCluster "$@"
+
+%apprun bigWigCorrelate
+    /usr/local/bin/bigWigCorrelate "$@"
+
+%apprun bigWigInfo
+    /usr/local/bin/bigWigInfo "$@"
+
+%apprun bigWigMerge
+    /usr/local/bin/bigWigMerge "$@"
+
+%apprun bigWigSummary
+    /usr/local/bin/bigWigSummary "$@"
+
+%apprun bigWigToBedGraph
+    /usr/local/bin/bigWigToBedGraph "$@"
+
+%apprun bigWigToWig
+    /usr/local/bin/bigWigToWig "$@"
+
+%apprun fetchChromSizes
+    /usr/local/bin/fetchChromSizes "$@"
+
+%apprun wigToBigWig
+    /usr/local/bin/wigToBigWig "$@"
+
+%help
+    kent - command-line genomics utilities

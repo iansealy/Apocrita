@@ -1,0 +1,48 @@
+Bootstrap: library
+From: iansealy/alpine/alpine311:3.11.3
+
+%labels
+    Author Ian Sealy
+    Version 101
+
+%post
+    apk --no-cache add perl perl-dbd-mysql perl-try-tiny perl-uri perl-config-inifiles perl-list-moreutils perl-path-tiny perl-readonly libcurl ncurses-libs zlib libbz2 xz-libs
+    apk --no-cache add --virtual build-dependencies build-base git perl-dev perl-module-build perl-app-cpanminus wget curl curl-dev ncurses-dev zlib-dev bzip2-dev xz-dev bash
+    git clone -b release-1-6-924 https://github.com/bioperl/bioperl-live.git
+    mv bioperl-live/Bio* /usr/local/lib/perl5/site_perl
+    git clone -b release/101 https://github.com/Ensembl/ensembl.git
+    mv ensembl/modules/Bio/EnsEMBL /usr/local/lib/perl5/site_perl/Bio
+    git clone -b release/101 https://github.com/Ensembl/ensembl-compara.git
+    mv ensembl-compara/modules/Bio/EnsEMBL/Compara /usr/local/lib/perl5/site_perl/Bio/EnsEMBL
+    rm -rf bioperl-live ensembl ensembl-compara
+    curl -SsOL https://github.com/samtools/htslib/releases/download/1.10.2/htslib-1.10.2.tar.bz2
+    tar jxf htslib-1.10.2.tar.bz2
+    cd htslib-1.10.2
+    ./configure
+    make
+    make test
+    make install
+    cd ..
+    rm -rf htslib-1.10.2*
+    cpanm Bio::DB::HTS
+    cpanm Sort::Naturally
+    apk del build-dependencies
+    echo '#!/usr/bin/env sh
+if [ -d "$HOME/perl5-ensembl-101" ]; then
+  perl -I$HOME/perl5-ensembl-101 "$@"
+elif [ -d "$HOME/perl5" ]; then
+  perl -I$HOME/perl5 "$@"
+else
+  perl "$@"
+fi' > /usr/bin/wrapper
+    chmod +x /usr/bin/wrapper
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+
+%runscript
+    /usr/bin/wrapper "$@"
+
+%help
+    Ensembl 101 - Ensembl Perl API, plus other Perl modules

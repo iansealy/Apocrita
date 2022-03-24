@@ -1,0 +1,14 @@
+# Guard against setting environment variables twice
+export ENVIRON_SET=1
+
+# Standard sorting
+export LC_ALL=C
+
+# Modulefiles
+export MODULEPATH="$MODULEPATH:/data/SBBS-BuschLab/modulefiles"
+
+# Personal bin
+export PATH="$HOME/bin:$PATH"
+
+# Less
+export LESSHISTFILE=-

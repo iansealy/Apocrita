@@ -1,0 +1,46 @@
+Bootstrap: library
+From: iansealy/alpine/alpine311:3.11.3
+
+%labels
+    Author Ian Sealy
+    Version 1
+
+%post
+    apk --no-cache add R perl
+    apk --no-cache add --virtual build-dependencies build-base git wget R-dev perl-app-cpanminus msttcorefonts-installer
+    perl -spi -e 's/# (.*)\@CRAN\@(.*)/${1}https:\/\/cloud.r-project.org\/$2/' /usr/lib/R/library/base/R/Rprofile
+    R --slave -e "update.packages(ask=FALSE)"
+    R --slave -e "install.packages('gtools')"
+    update-ms-fonts
+    fc-cache -f
+    cpanm Text::NSP::Measures::2D::Fisher::twotailed
+    git clone https://github.com/xiekunwhy/bsa.git
+    cd bsa
+    perl -spi -e 's{/Bio/bin/Rscript-3.6.0}{/usr/bin/Rscript}g' *.pl
+    chmod +x *.pl
+    cp *.pl *.r /usr/local/bin
+    cd ..
+    rm -rf bsa
+    apk del build-dependencies
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+
+%apprun bsaindex
+    /usr/local/bin/bsaindex.pl "$@"
+
+%apprun pointlineplot
+    /usr/local/bin/point_line_plot.pl "$@"
+
+%apprun qtlregion
+    /usr/local/bin/qtl_region.pl "$@"
+
+%apprun simulationv2
+    /usr/local/bin/simulation_v2.pl "$@"
+
+%apprun slidewindow
+    /usr/local/bin/slidewindow.pl "$@"
+
+%help
+    bsa - Bulk segregant analysis using a VCF file

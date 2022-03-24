@@ -1,0 +1,30 @@
+Bootstrap: library
+From: iansealy/alpine/alpine311:3.11.3
+
+%labels
+    Author Ian Sealy
+    Version 0.1.1
+
+%post
+    apk --no-cache add perl perl-list-moreutils perl-readonly perl-path-tiny
+    apk --no-cache add --virtual build-dependencies curl build-base perl-dev perl-capture-tiny perl-test-exception
+    curl -SsOL https://github.com/iansealy/RefGenEdit/releases/download/v0.1.1/RefGenEdit-0.1.1.tar.gz
+    tar zxf RefGenEdit-0.1.1.tar.gz
+    cd RefGenEdit-0.1.1
+    perl Makefile.PL
+    make
+    make test
+    make install
+    cd ..
+    rm -rf RefGenEdit-0.1.1*
+    apk del build-dependencies
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+
+%runscript
+    /usr/local/bin/ref_gen_edit.pl "$@"
+
+%help
+    RefGenEdit - Reference Genome Editor

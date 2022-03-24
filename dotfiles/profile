@@ -1,0 +1,12 @@
+# Set environment variables
+if [ -f ~/.environ ]; then
+  . ~/.environ
+fi
+if [ -f ~/.environ.private ]; then
+  . ~/.environ.private
+fi
+
+# Source Bash-specific config if running Bash
+if [ "$BASH" ] && [ -f ~/.bashrc ]; then
+  . ~/.bashrc
+fi

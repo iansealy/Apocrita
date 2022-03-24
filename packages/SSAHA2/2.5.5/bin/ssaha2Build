@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+/usr/bin/singularity run --bind /data --app ssaha2Build /data/SBBS-BuschLab/containers/SSAHA2-2.5.5.sif "$@"

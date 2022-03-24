@@ -1,0 +1,25 @@
+Bootstrap: library
+From: iansealy/alpine/alpine311:3.11.3
+
+%labels
+    Author Ian Sealy
+    Version 20.01.0
+
+%post
+    apk --no-cache add --virtual build-dependencies curl
+    apk --no-cache add openjdk8-jre bash
+    cd /usr/local/bin
+    curl -SsL https://github.com/nextflow-io/nextflow/releases/download/v20.01.0/nextflow-20.01.0-all -o nextflow
+    chmod a+x nextflow
+    apk del build-dependencies
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+    export NXF_VER=20.01.0
+
+%runscript
+    /usr/local/bin/nextflow "$@"
+
+%help
+    Nextflow - data-driven computational pipelines

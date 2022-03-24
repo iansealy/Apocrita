@@ -1,0 +1,24 @@
+Bootstrap: library
+From: iansealy/alpine/alpine311:3.11.3
+
+%labels
+    Author Ian Sealy
+    Version 2.7.3a
+
+%post
+    apk --no-cache add --virtual build-dependencies curl
+    curl -SsOL https://github.com/alexdobin/STAR/archive/2.7.3a.tar.gz
+    tar zxf 2.7.3a.tar.gz
+    cp STAR-2.7.3a/bin/Linux_x86_64_static/STAR /usr/local/bin
+    rm -rf 2.7.3a.tar.gz STAR-2.7.3a
+    apk del build-dependencies
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+
+%runscript
+    /usr/local/bin/STAR "$@"
+
+%help
+    STAR - RNA-seq aligner

@@ -1,0 +1,35 @@
+Bootstrap: library
+From: iansealy/ubuntu/ubuntu1804:18.04
+
+%labels
+    Author Ian Sealy
+    Version 4.11.1
+
+%post
+    apt-get -q update
+    apt-get -q -y upgrade
+    DEBIAN_FRONTEND=noninteractive apt-get -q -y install perl-base wget zip unzip build-essential
+    mkdir /opt/HOMER
+    cd /opt/HOMER
+    wget http://homer.ucsd.edu/homer/configureHomer.pl
+    perl configureHomer.pl -install
+    perl configureHomer.pl -install danRer11
+    mkdir data/promoters
+    cd update
+    echo -e "zebrafish\tdanRer11\tzebrafish\trefseq\tv6.4" > promoters.txt
+    PATH="/opt/HOMER/bin:$PATH" perl updatePromoters.pl promoters.txt
+    rm promoters.txt
+    apt-get -q -y purge wget zip unzip build-essential
+    apt-get -q -y clean
+    rm -rf /var/lib/apt/lists/*
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+    export PATH="/opt/HOMER/bin:$PATH"
+
+%runscript
+    /opt/HOMER/bin/findMotifs.pl "$@"
+
+%help
+    HOMER - Hypergeometric Optimization of Motif EnRichment

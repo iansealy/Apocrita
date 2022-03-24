@@ -1,0 +1,3 @@
+#%Module1.0
+# GATK-4.1.9.0.sif
+prepend-path PATH /data/SBBS-BuschLab/packages/GATK/4.1.9.0/bin

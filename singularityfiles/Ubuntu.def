@@ -1,0 +1,12 @@
+Bootstrap: scratch
+
+%labels
+    Author Ian Sealy
+    Version 18.04
+
+%setup
+    wget -O - "https://partner-images.canonical.com/core/bionic/current/ubuntu-bionic-core-cloudimg-amd64-root.tar.gz" \
+        | tar zx -C "$SINGULARITY_ROOTFS" --exclude=dev --exclude=etc/resolv.conf
+
+%help
+    Ubuntu

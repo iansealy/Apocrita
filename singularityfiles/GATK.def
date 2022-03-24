@@ -1,0 +1,12 @@
+Bootstrap: docker
+From: broadinstitute/gatk:4.1.9.0
+
+%labels
+    Author Ian Sealy
+    Version 4.1.9.0
+
+%runscript
+    /gatk/gatk "$@"
+
+%help
+    GATK - a genomic analysis toolkit focused on variant discovery

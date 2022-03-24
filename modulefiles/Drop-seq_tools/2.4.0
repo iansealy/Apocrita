@@ -1,0 +1,3 @@
+#%Module1.0
+# Drop-seq_tools-2.4.0.sif
+prepend-path PATH /data/SBBS-BuschLab/packages/Drop-seq_tools/2.4.0/bin

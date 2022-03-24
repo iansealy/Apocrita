@@ -1,0 +1,37 @@
+# Source global bashrc
+if [ -f /etc/bashrc ]; then
+  . /etc/bashrc
+fi
+
+# Set environment variables if not set already
+if [[ ! $ENVIRON_SET ]]; then
+  if [ -f ~/.environ ]; then
+    . ~/.environ
+  fi
+  if [ -f ~/.environ.private ]; then
+    . ~/.environ.private
+  fi
+fi
+
+# Check if interactive
+[[ $- == *i* ]] || return 0
+
+# Prompt
+PS1='\[\e[1m\][\u@\h]\[\e[m\]\w\$ '
+
+# History
+shopt -s histappend
+HISTSIZE=1000000
+HISTFILESIZE=1000000000
+HISTCONTROL=ignoreboth
+PROMPT_COMMAND='history -a'
+
+# Aliases
+if [ -f ~/.aliases ]; then
+  . ~/.aliases
+fi
+
+# Functions
+if [ -f ~/.functions ]; then
+  . ~/.functions
+fi

@@ -1,0 +1,115 @@
+Bootstrap: library
+From: iansealy/alpine/alpine311:3.11.3
+
+%labels
+    Author Ian Sealy
+    Version 2.4.37
+
+%post
+    apk --no-cache add bash tcsh python
+    apk --no-cache add --virtual build-dependencies curl util-linux
+    mkdir bedops
+    cd bedops
+    curl -SsOL https://github.com/bedops/bedops/releases/download/v2.4.37/bedops_linux_x86_64-v2.4.37.tar.bz2
+    tar jxf bedops_linux_x86_64-v2.4.37.tar.bz2
+    cd bin
+    ls * | grep -v typical$ | xargs rm
+    rename -- "-typical" "" *-typical
+    cp * /usr/local/bin
+    cd ../..
+    rm -rf bedops
+    apk del build-dependencies
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+
+%runscript
+    /usr/local/bin/bedops "$@"
+
+%apprun bam2bed
+    /usr/local/bin/bam2bed "$@"
+
+%apprun bam2starch
+    /usr/local/bin/bam2starch "$@"
+
+%apprun bedextract
+    /usr/local/bin/bedextract "$@"
+
+%apprun bedmap
+    /usr/local/bin/bedmap "$@"
+
+%apprun closestfeatures
+    /usr/local/bin/closest-features "$@"
+
+%apprun convert2bed
+    /usr/local/bin/convert2bed "$@"
+
+%apprun gff2bed
+    /usr/local/bin/gff2bed "$@"
+
+%apprun gff2starch
+    /usr/local/bin/gff2starch "$@"
+
+%apprun gtf2bed
+    /usr/local/bin/gtf2bed "$@"
+
+%apprun gtf2starch
+    /usr/local/bin/gtf2starch "$@"
+
+%apprun gvf2bed
+    /usr/local/bin/gvf2bed "$@"
+
+%apprun gvf2starch
+    /usr/local/bin/gvf2starch "$@"
+
+%apprun psl2bed
+    /usr/local/bin/psl2bed "$@"
+
+%apprun psl2starch
+    /usr/local/bin/psl2starch "$@"
+
+%apprun rmsk2bed
+    /usr/local/bin/rmsk2bed "$@"
+
+%apprun rmsk2starch
+    /usr/local/bin/rmsk2starch "$@"
+
+%apprun sam2bed
+    /usr/local/bin/sam2bed "$@"
+
+%apprun sam2starch
+    /usr/local/bin/sam2starch "$@"
+
+%apprun sortbed
+    /usr/local/bin/sort-bed "$@"
+
+%apprun starch
+    /usr/local/bin/starch "$@"
+
+%apprun starchdiff
+    /usr/local/bin/starch-diff "$@"
+
+%apprun starchcat
+    /usr/local/bin/starchcat "$@"
+
+%apprun starchstrip
+    /usr/local/bin/starchstrip "$@"
+
+%apprun unstarch
+    /usr/local/bin/unstarch "$@"
+
+%apprun vcf2bed
+    /usr/local/bin/vcf2bed "$@"
+
+%apprun vcf2starch
+    /usr/local/bin/vcf2starch "$@"
+
+%apprun wig2bed
+    /usr/local/bin/wig2bed "$@"
+
+%apprun wig2starch
+    /usr/local/bin/wig2starch "$@"
+
+%help
+    BEDOPS - fast, highly scalable and easily-parallelisable genome analysis toolkit

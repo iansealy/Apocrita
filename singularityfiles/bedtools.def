@@ -1,0 +1,39 @@
+Bootstrap: library
+From: iansealy/alpine/alpine311:3.11.3
+
+%labels
+    Author Ian Sealy
+    Version 2.29.2
+
+%post
+    apk add libbz2 libstdc++ libgcc xz-libs
+    apk --no-cache add --virtual build-dependencies build-base curl curl-dev ncurses-dev zlib-dev bzip2-dev xz-dev perl python2 sed gzip bash
+    curl -SsOL https://github.com/samtools/samtools/releases/download/1.9/samtools-1.9.tar.bz2
+    tar jxf samtools-1.9.tar.bz2
+    cd samtools-1.9
+    ./configure
+    make
+    make test
+    cp samtools /usr/local/bin
+    cd ..
+    rm -rf samtools-1.9*
+    curl -SsOL https://github.com/arq5x/bedtools2/releases/download/v2.29.2/bedtools-2.29.2.tar.gz
+    tar zxf bedtools-2.29.2.tar.gz
+    cd bedtools2
+    make
+    make test
+    cp bin/bedtools /usr/local/bin
+    cd ..
+    rm -rf bedtools*
+    rm /usr/local/bin/samtools
+    apk del build-dependencies
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+
+%runscript
+    /usr/local/bin/bedtools "$@"
+
+%help
+    bedtools - toolset for genome arithmetic

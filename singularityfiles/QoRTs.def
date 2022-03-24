@@ -1,0 +1,62 @@
+Bootstrap: library
+From: iansealy/ubuntu/ubuntu1804:18.04
+
+%labels
+    Author Ian Sealy
+    Version 1.3.6
+
+%post
+    apt-get -q update
+    apt-get -q -y upgrade
+    DEBIAN_FRONTEND=noninteractive apt-get -q -y install curl build-essential gfortran tzdata \
+      texlive-latex-base texlive-fonts-extra libopenblas-base libopenblas-dev \
+      libreadline7 libreadline-dev zlib1g zlib1g-dev libbz2-1.0 libbz2-dev liblzma5 liblzma-dev \
+      libpcre2-8-0 libpcre2-16-0 libpcre2-32-0 libpcre2-posix0 libpcre2-dev \
+      libcurl4 libcurl4-openssl-dev libpng16-16 libpng-dev libjpeg8 libjpeg8-dev \
+      libtiff5 libtiff5-dev libcairo2 libcairo2-dev libicu60 libicu-dev \
+      libxml2 libxml2-dev libssl1.1 libssl-dev openjdk-8-jre
+    curl -SsOL https://cran.r-project.org/src/base/R-4/R-4.0.2.tar.gz
+    tar zxf R-4.0.2.tar.gz
+    cd R-4.0.2
+    ./configure --disable-java --with-blas --without-x
+    make
+    make check
+    mkdir -p /usr/local/lib/R/lib
+    make install
+    perl -spi -e 's/# (.*)\@CRAN\@(.*)/${1}https:\/\/cloud.r-project.org\/$2/' /usr/local/lib/R/library/base/R/Rprofile
+    cd ..
+    rm -rf R-4.0.2*
+    R --slave -e "update.packages(ask=FALSE)"
+    R --slave -e "install.packages('https://github.com/hartleys/QoRTs/raw/099881f9c0e04b284848d4024ebd2ae768020251/QoRTs_1.3.6.tar.gz', repos=NULL, type='source')"
+    R --slave -e "install.packages('BiocManager')"
+    R --slave -e "BiocManager::install()"
+    R --slave -e "BiocManager::install('DESeq2')"
+    R --slave -e "BiocManager::install('edgeR')"
+    mkdir -p /usr/local/share/java
+    cd /usr/local/share/java
+    curl -SsL 'https://github.com/hartleys/QoRTs/blob/v1.3.6/QoRTs.jar?raw=true' -o QoRTs.jar
+    echo '#!/usr/bin/env sh
+java -jar /usr/local/share/java/QoRTs.jar "$@"' > /usr/local/bin/qorts
+    chmod a+x /usr/local/bin/qorts
+    apt-get -q -y purge curl build-essential gfortran texlive-fonts-extra \
+      libopenblas-dev libreadline-dev zlib1g-dev libbz2-dev liblzma-dev libpcre2-dev \
+      libcurl4-openssl-dev libpng-dev libjpeg8-dev libtiff5-dev libcairo2-dev libicu-dev \
+      libxml2-dev libssl-dev
+    apt-get -q -y clean
+    rm -rf /var/lib/apt/lists/*
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+
+%runscript
+    /usr/local/bin/qorts "$@"
+
+%apprun R
+    /usr/local/bin/R "$@"
+
+%apprun Rscript
+    /usr/local/bin/Rscript "$@"
+
+%help
+    QoRTs - quality of RNA-seq tool-set

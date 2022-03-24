@@ -1,0 +1,29 @@
+Bootstrap: library
+From: iansealy/alpine/alpine311:3.11.3
+
+%labels
+    Author Ian Sealy
+    Version 1.5
+
+%post
+    apk --no-cache add --virtual build-dependencies build-base curl perl
+    curl -SsOL https://ftp.gnu.org/gnu/datamash/datamash-1.5.tar.gz
+    tar zxf datamash-1.5.tar.gz
+    cd datamash-1.5
+    ./configure
+    make
+    make check
+    make install
+    cd ..
+    rm -rf datamash-1.5*
+    apk del build-dependencies
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+
+%runscript
+    /usr/local/bin/datamash "$@"
+
+%help
+    datamash - basic numeric, textual and statistical operations on input textual data files

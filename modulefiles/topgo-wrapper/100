@@ -1,0 +1,3 @@
+#%Module1.0
+# topgo-wrapper-100.sif
+prepend-path PATH /data/SBBS-BuschLab/packages/topgo-wrapper/100/bin

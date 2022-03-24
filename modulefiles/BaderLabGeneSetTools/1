@@ -1,0 +1,3 @@
+#%Module1.0
+# BaderLabGeneSetTools-1.sif
+prepend-path PATH /data/SBBS-BuschLab/packages/BaderLabGeneSetTools/1/bin

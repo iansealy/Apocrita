@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+/usr/bin/singularity run --bind /data --app gtf2bed /data/SBBS-BuschLab/containers/BEDOPS-2.4.37.sif "$@"

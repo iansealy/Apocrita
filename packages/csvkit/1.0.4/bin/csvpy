@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+/usr/bin/singularity run --bind /data --app csvpy /data/SBBS-BuschLab/containers/csvkit-1.0.4.sif "$@"

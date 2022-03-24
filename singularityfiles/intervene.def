@@ -1,0 +1,31 @@
+Bootstrap: library
+From: iansealy/ubuntu/ubuntu1804:18.04
+
+%labels
+    Author Ian Sealy
+    Version 0.6.4
+
+%post
+    apt-get -q update
+    apt-get -q -y upgrade
+    DEBIAN_FRONTEND=noninteractive apt-get -q -y install build-essential r-base r-base-dev libcairo2-dev libxt-dev \
+        bedtools cython3 python3 python3-pip python3-pandas python3-numpy python3-scipy python3-matplotlib python3-seaborn
+    R --slave -e "update.packages(ask=FALSE)"
+    R --slave -e "install.packages('UpSetR')"
+    R --slave -e "install.packages('corrplot')"
+    R --slave -e "install.packages('Cairo')"
+    pip3 install intervene==0.6.4
+    apt-get -q -y purge build-essential r-base-dev libcairo2-dev libxt-dev cython3 python3-pip
+    apt-get -q -y autoremove
+    apt-get -q -y clean
+    rm -rf /var/lib/apt/lists/*
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+
+%runscript
+    /usr/local/bin/intervene "$@"
+
+%help
+    intervene - a tool for intersection and visualization of multiple gene or genomic region sets

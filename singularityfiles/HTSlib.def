@@ -1,0 +1,36 @@
+Bootstrap: library
+From: iansealy/alpine/alpine311:3.11.3
+
+%labels
+    Author Ian Sealy
+    Version 1.11
+
+%post
+    apk --no-cache add libcurl ncurses-libs zlib libbz2 xz-libs
+    apk --no-cache add --virtual build-dependencies build-base curl curl-dev ncurses-dev zlib-dev bzip2-dev xz-dev perl bash
+    curl -SsOL https://github.com/samtools/htslib/releases/download/1.11/htslib-1.11.tar.bz2
+    tar jxf htslib-1.11.tar.bz2
+    cd htslib-1.11
+    ./configure
+    make
+    make test
+    make install
+    cd ..
+    rm -rf htslib-1.11*
+    apk del build-dependencies
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+
+%runscript
+    /usr/local/bin/htsfile "$@"
+
+%apprun bgzip
+    /usr/local/bin/bgzip "$@"
+
+%apprun tabix
+    /usr/local/bin/tabix "$@"
+
+%help
+    HTSlib - C library for reading/writing high-throughput sequencing data

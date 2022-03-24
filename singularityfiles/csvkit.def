@@ -1,0 +1,61 @@
+Bootstrap: library
+From: iansealy/alpine/alpine311:3.11.3
+
+%labels
+    Author Ian Sealy
+    Version 1.0.4
+
+%post
+    apk --no-cache add python3
+    apk --no-cache add --virtual build-dependencies build-base python3-dev
+    pip3 install csvkit==1.0.4
+    apk del build-dependencies
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+
+%apprun csvclean
+    /usr/bin/csvclean "$@"
+
+%apprun csvcut
+    /usr/bin/csvcut "$@"
+
+%apprun csvformat
+    /usr/bin/csvformat "$@"
+
+%apprun csvgrep
+    /usr/bin/csvgrep "$@"
+
+%apprun csvjoin
+    /usr/bin/csvjoin "$@"
+
+%apprun csvjson
+    /usr/bin/csvjson "$@"
+
+%apprun csvlook
+    /usr/bin/csvlook "$@"
+
+%apprun csvpy
+    /usr/bin/csvpy "$@"
+
+%apprun csvsort
+    /usr/bin/csvsort "$@"
+
+%apprun csvsql
+    /usr/bin/csvsql "$@"
+
+%apprun csvstack
+    /usr/bin/csvstack "$@"
+
+%apprun csvstat
+    /usr/bin/csvstat "$@"
+
+%apprun in2csv
+    /usr/bin/in2csv "$@"
+
+%apprun sql2csv
+    /usr/bin/sql2csv "$@"
+
+%help
+    csvkit - command-line tools for converting to and working with CSV

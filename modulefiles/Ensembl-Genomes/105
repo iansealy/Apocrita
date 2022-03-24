@@ -1,0 +1,3 @@
+#%Module1.0
+# Ensembl-Genomes-105.sif
+prepend-path PATH /data/SBBS-BuschLab/packages/Ensembl-Genomes/105/bin

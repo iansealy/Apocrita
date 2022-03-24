@@ -1,0 +1,25 @@
+Bootstrap: library
+From: iansealy/alpine/alpine311:3.11.3
+
+%labels
+    Author Ian Sealy
+    Version 4.0.3
+
+%post
+    apk --no-cache add --virtual build-dependencies curl
+    apk --no-cache add openjdk11-jre fontconfig ttf-dejavu
+    curl -SsOL https://data.broadinstitute.org/gsea-msigdb/gsea/software/desktop/4.0/GSEA_4.0.3.zip
+    unzip GSEA_4.0.3.zip
+    mv GSEA_4.0.3 /opt/GSEA
+    rm GSEA_4.0.3.zip
+    apk del build-dependencies
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+
+%runscript
+    /opt/GSEA/gsea-cli.sh "$@"
+
+%help
+    GSEA - Gene Set Enrichment Analysis

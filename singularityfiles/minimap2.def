@@ -1,0 +1,30 @@
+Bootstrap: library
+From: iansealy/alpine/alpine311:3.11.3
+
+%labels
+    Author Ian Sealy
+    Version 2.17
+
+%post
+    apk --no-cache add zlib
+    apk --no-cache add --virtual build-dependencies build-base curl zlib-dev
+    curl -SsOL https://github.com/lh3/minimap2/releases/download/v2.17/minimap2-2.17.tar.bz2
+    tar jxf minimap2-2.17.tar.bz2
+    cd minimap2-2.17
+    make
+    mkdir -p /usr/local/man/man1
+    cp minimap2 /usr/local/bin
+    cp minimap2.1 /usr/local/man/man1
+    cd ..
+    rm -rf minimap2-2.17*
+    apk del build-dependencies
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+
+%runscript
+    /usr/local/bin/minimap2 "$@"
+
+%help
+    minimap2 - a versatile pairwise aligner for genomic and spliced nucleotide sequences

@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+/usr/bin/singularity run --bind /data --app bigWigAverageOverBed /data/SBBS-BuschLab/containers/kent-394.sif "$@"

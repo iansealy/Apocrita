@@ -1,0 +1,47 @@
+Bootstrap: library
+From: iansealy/ubuntu/ubuntu1804:18.04
+
+%labels
+    Author Ian Sealy
+    Version 0.1.47
+
+%post
+    apt-get -q update
+    apt-get -q -y upgrade
+    apt-get -q -y install gnupg ca-certificates software-properties-common
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+    add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran35/"
+    apt-get -q update
+    apt-get -q -y upgrade
+    DEBIAN_FRONTEND=noninteractive apt-get -q -y install build-essential curl r-base r-base-dev libpath-tiny-perl libreadonly-perl libreadonly-xs-perl libtry-tiny-perl libmodule-build-perl
+    R --slave -e "update.packages(ask=FALSE)"
+    R --slave -e "install.packages('BiocManager')"
+    R --slave -e "BiocManager::install()"
+    R --slave -e "BiocManager::install('topGO')"
+    R --slave -e "BiocManager::install('Rgraphviz')"
+    curl -SsOL https://github.com/iansealy/topgo-wrapper/releases/download/v0.1.47/topgo-wrapper-0.1.47.tar.gz
+    tar zxf topgo-wrapper-0.1.47.tar.gz
+    cd topgo-wrapper-0.1.47
+    perl Makefile.PL
+    make
+    make test
+    make install
+    mkdir /usr/local/share/topgo-wrapper
+    mv data /usr/local/share/topgo-wrapper
+    find /usr/local/share/topgo-wrapper -type f | grep -v e101 | xargs rm
+    cd ..
+    rm -rf topgo-wrapper-0.1.47*
+    apt-get -q -y purge gnupg software-properties-common build-essential curl r-base-dev libmodule-build-perl
+    apt-get -q -y autoremove
+    apt-get -q -y clean
+    rm -rf /var/lib/apt/lists/*
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+
+%runscript
+    /usr/local/bin/run_topgo.pl "$@"
+
+%help
+    topgo-wrapper 101 - wrapper for topGO

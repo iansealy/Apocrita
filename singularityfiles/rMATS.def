@@ -1,0 +1,41 @@
+Bootstrap: library
+From: iansealy/ubuntu/ubuntu1804:18.04
+
+%labels
+    Author Ian Sealy
+    Version 4.1.2
+
+%post
+    apt-get -q update
+    apt-get -q -y upgrade
+    DEBIAN_FRONTEND=noninteractive apt-get -q -y install build-essential curl cmake gfortran \
+      cython python python-dev python-numpy zlib1g zlib1g-dev \
+      libopenblas-base libopenblas-dev libgsl23 libgslcblas0 libgsl-dev liblapack3 liblapack-dev
+    curl -SsOL https://github.com/Xinglab/rmats-turbo/releases/download/v4.1.2/rmats_turbo_v4_1_2.tar.gz
+    tar zxf rmats_turbo_v4_1_2.tar.gz
+    cd rmats_turbo_v4_1_2
+    ./build_rmats --no-paired-model
+    mkdir -p /opt/rmats/rMATS_C /opt/rmats/rMATS_P
+    cp rmats.py cp_with_prefix.py /opt/rmats
+    cp *.so /opt/rmats
+    cp rMATS_C/rMATSexe /opt/rmats/rMATS_C
+    cp rMATS_P/*.py /opt/rmats/rMATS_P
+    chmod -R a+r /opt/rmats
+    rm -rf rmats_turbo_v4_1_2*
+    apt-get -q -y purge build-essential cython python-dev zlib1g-dev libopenblas-dev libgsl-dev liblapack-dev
+    apt-get -q -y autoremove
+    apt-get -q -y clean
+    rm -rf /var/lib/apt/lists/*
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+
+%runscript
+    /usr/bin/python /opt/rmats/rmats.py "$@"
+
+%apprun cp
+    /usr/bin/python /opt/rmats/cp_with_prefix.py "$@"
+
+%help
+    rMATS - Multivariate Analysis of Transcript Splicing

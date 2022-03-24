@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+/usr/bin/singularity run --bind /data /data/SBBS-BuschLab/containers/MultiQC-1.8.sif "$@"
