@@ -1,3 +1,2 @@
 # Pico
-module load nano
 alias pico=nano
