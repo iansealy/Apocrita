@@ -70,14 +70,12 @@ Running specific tasks from an array job:
 - `qsub -t 5 job.sh`
 - `qsub -t 10-20 job.sh`
 
-- Memory requests are per core
-
+Memory requests are per core:
 ```
 # 1 GB allocated:
 #$ -pe smp 1
 #$ -l h_vmem=1G
 ```
-
 ```
 # 2 GB allocated:
 #$ -pe smp 2
