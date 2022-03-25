@@ -1,0 +1,3 @@
+#%Module1.0
+# SeqKit-2.2.0.sif
+prepend-path PATH /data/SBBS-BuschLab/packages/SeqKit/2.2.0/bin
