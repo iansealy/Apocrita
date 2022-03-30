@@ -10,6 +10,8 @@ ln -s /data/SBBS-BuschLab/checkouts/Apocrita/dotfiles/environ ~/.environ
 ln -s /data/SBBS-BuschLab/checkouts/Apocrita/dotfiles/aliases ~/.aliases
 ln -s /data/SBBS-BuschLab/checkouts/Apocrita/dotfiles/functions ~/.functions
 ln -s /data/SBBS-BuschLab/checkouts/Apocrita/dotfiles/bash_logout ~/.bash_logout
+chgrp SBBS-BuschLab /data/scratch/$USER
+chmod g+r /data/scratch/$USER
 exit
 ```
 
