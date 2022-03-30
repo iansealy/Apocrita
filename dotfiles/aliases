@@ -1,2 +1,8 @@
 # Pico
 alias pico=nano
+
+# cd to scratch
+alias scratch="cd /data/scratch/$USER"
+
+# cd to shared
+alias shared="cd /data/SBBS-BuschLab"

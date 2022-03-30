@@ -7,8 +7,8 @@ export LC_ALL=C
 # Modulefiles
 export MODULEPATH="$MODULEPATH:/data/SBBS-BuschLab/modulefiles"
 
-# Personal bin and nano
-export PATH="$HOME/bin:/share/apps/centos7/nano/2.8.6/bin:$PATH"
+# Personal bin, shared bin and nano
+export PATH="$HOME/bin:/data/SBBS-BuschLab/bin:/share/apps/centos7/nano/2.8.6/bin:$PATH"
 
 # Less
 export LESSHISTFILE=-

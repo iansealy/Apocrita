@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+for user in `getent group SBBS-BuschLab | sed -e 's/.*://' | sed -e 's/,/ /g'`; do
+  getent passwd $user | awk -F":" "{ print \"/data/scratch/$user\t\" \$5 }"
+done
