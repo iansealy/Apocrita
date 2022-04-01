@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+/usr/bin/singularity run --bind /data --app gvmap /data/SBBS-BuschLab/containers/Graphviz-2.49.3.sif "$@"

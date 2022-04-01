@@ -1,0 +1,130 @@
+Bootstrap: library
+From: iansealy/alpine/alpine315:3.15.0
+
+%labels
+    Author Ian Sealy
+    Version 2.49.3
+
+%post
+    apk --no-cache add graphviz
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+
+%apprun acyclic
+    /usr/bin/acyclic "$@"
+
+%apprun bcomps
+    /usr/bin/bcomps "$@"
+
+%apprun ccomps
+    /usr/bin/ccomps "$@"
+
+%apprun circo
+    /usr/bin/circo "$@"
+
+%apprun cluster
+    /usr/bin/cluster "$@"
+
+%apprun dijkstra
+    /usr/bin/dijkstra "$@"
+
+%apprun dot
+    /usr/bin/dot "$@"
+
+%apprun dot2gxl
+    /usr/bin/dot2gxl "$@"
+
+%apprun dotbuiltins
+    /usr/bin/dot_builtins "$@"
+
+%apprun dotty
+    /usr/bin/dotty "$@"
+
+%apprun edgepaint
+    /usr/bin/edgepaint "$@"
+
+%apprun fdp
+    /usr/bin/fdp "$@"
+
+%apprun gc
+    /usr/bin/gc "$@"
+
+%apprun gml2gv
+    /usr/bin/gml2gv "$@"
+
+%apprun graphml2gv
+    /usr/bin/graphml2gv "$@"
+
+%apprun gv2gml
+    /usr/bin/gv2gml "$@"
+
+%apprun gv2gxl
+    /usr/bin/gv2gxl "$@"
+
+%apprun gvcolor
+    /usr/bin/gvcolor "$@"
+
+%apprun gvgen
+    /usr/bin/gvgen "$@"
+
+%apprun gvmap
+    /usr/bin/gvmap "$@"
+
+%apprun gvmapsh
+    /usr/bin/gvmap.sh "$@"
+
+%apprun gvpack
+    /usr/bin/gvpack "$@"
+
+%apprun gvpr
+    /usr/bin/gvpr "$@"
+
+%apprun gxl2dot
+    /usr/bin/gxl2dot "$@"
+
+%apprun gxl2gv
+    /usr/bin/gxl2gv "$@"
+
+%apprun lneato
+    /usr/bin/lneato "$@"
+
+%apprun mm2gv
+    /usr/bin/mm2gv "$@"
+
+%apprun neato
+    /usr/bin/neato "$@"
+
+%apprun nop
+    /usr/bin/nop "$@"
+
+%apprun osage
+    /usr/bin/osage "$@"
+
+%apprun patchwork
+    /usr/bin/patchwork "$@"
+
+%apprun prune
+    /usr/bin/prune "$@"
+
+%apprun sccmap
+    /usr/bin/sccmap "$@"
+
+%apprun sfdp
+    /usr/bin/sfdp "$@"
+
+%apprun tred
+    /usr/bin/tred "$@"
+
+%apprun twopi
+    /usr/bin/twopi "$@"
+
+%apprun unflatten
+    /usr/bin/unflatten "$@"
+
+%apprun vimdot
+    /usr/bin/vimdot "$@"
+
+%help
+    Graphviz - Graph visualisation software
