@@ -23,6 +23,16 @@ module load python/3.8.5
 pip install --prefix=/data/SBBS-BuschLab/python/Snakemake-7.3.1 snakemake==7.3.1
 ```
 
+## Installing Python modules
+
+```
+mkdir -p /data/SBBS-BuschLab/python/NumPy-1.22.3
+module load python/3.8.5
+pip install --prefix=/data/SBBS-BuschLab/python/NumPy-1.22.3 numpy==1.22.3
+```
+
+(A Python Singularity container is also available.)
+
 ## Useful Info
 
 From https://docs.hpc.qmul.ac.uk/
