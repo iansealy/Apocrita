@@ -37,6 +37,10 @@ pip install --prefix=/data/SBBS-BuschLab/python/Matplotlib-3.5.1 matplotlib==3.5
 mkdir -p /data/SBBS-BuschLab/python/pysam-0.19.0
 module load python/3.8.5
 pip install --prefix=/data/SBBS-BuschLab/python/pysam-0.19.0 pysam==0.19.0
+
+mkdir -p /data/SBBS-BuschLab/python/pandas-1.4.2
+module load NumPy/1.22.3
+pip install --prefix=/data/SBBS-BuschLab/python/pandas-1.4.2 pandas==1.4.2
 ```
 
 (A Python Singularity container is also available.)
