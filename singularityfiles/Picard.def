@@ -3,7 +3,7 @@ From: iansealy/alpine/alpine311:3.11.3
 
 %labels
     Author Ian Sealy
-    Version 2.24.0
+    Version 2.27.1
 
 %post
     apk --no-cache add --virtual build-dependencies curl
@@ -11,7 +11,7 @@ From: iansealy/alpine/alpine311:3.11.3
     ln -s /lib/libc.musl-x86_64.so.1 /lib/ld-linux-x86-64.so.2
     mkdir -p /usr/local/share/java
     cd /usr/local/share/java
-    curl -SsOL https://github.com/broadinstitute/picard/releases/download/2.24.0/picard.jar
+    curl -SsOL https://github.com/broadinstitute/picard/releases/download/2.27.1/picard.jar
     echo '#!/usr/bin/env sh
 java -jar /usr/local/share/java/picard.jar "$@"' > /usr/local/bin/picard
     chmod a+x /usr/local/bin/picard

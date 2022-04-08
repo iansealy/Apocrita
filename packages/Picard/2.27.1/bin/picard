@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+/usr/bin/singularity run --bind /data /data/SBBS-BuschLab/containers/Picard-2.27.1.sif "$@"
