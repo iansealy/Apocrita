@@ -1,0 +1,3 @@
+#%Module1.0
+# biobambam2-2.0.180.sif
+prepend-path PATH /data/SBBS-BuschLab/packages/biobambam2/2.0.180/bin

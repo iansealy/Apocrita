@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+/usr/bin/singularity run --bind /data --app bamfilternames /data/SBBS-BuschLab/containers/biobambam2-2.0.180.sif "$@"

@@ -3,18 +3,18 @@ From: iansealy/ubuntu/ubuntu1804:18.04
 
 %labels
     Author Ian Sealy
-    Version 2.0.146
+    Version 2.0.180
 
 %post
 
     apt-get -q update
     apt-get -q -y upgrade
     DEBIAN_FRONTEND=noninteractive apt-get -q -y install curl xz-utils
-    curl -SsOL https://gitlab.com/german.tischler/biobambam2/uploads/178774a8ece96d2201fcd0b5249884c7/biobambam2-2.0.146-release-20191030105216-x86_64-linux-gnu.tar.xz
-    tar xf biobambam2-2.0.146-release-20191030105216-x86_64-linux-gnu.tar.xz
-    mv biobambam2/x86_64-linux-gnu/2.0.146/bin/* /usr/local/bin
-    mv biobambam2/x86_64-linux-gnu/2.0.146/lib/* /usr/local/lib
-    mv biobambam2/x86_64-linux-gnu/2.0.146/share/* /usr/local/share
+    curl -SsOL https://gitlab.com/german.tischler/biobambam2/uploads/ffbf93e1b4ca3a695bba8f10b131cf44/biobambam2_x86_64-linux-gnu_2.0.180.tar.xz
+    tar xf biobambam2_x86_64-linux-gnu_2.0.180.tar.xz
+    mv biobambam2/x86_64-linux-gnu/2.0.180/bin/* /usr/local/bin
+    mv biobambam2/x86_64-linux-gnu/2.0.180/lib/* /usr/local/lib
+    mv biobambam2/x86_64-linux-gnu/2.0.180/share/* /usr/local/share
     chown -R root: /usr/local
     rm -rf biobambam2
     apt-get -q -y purge curl xz-utils
