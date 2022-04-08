@@ -12,3 +12,9 @@ export PATH="$HOME/bin:/data/SBBS-BuschLab/bin:/share/apps/centos7/nano/2.8.6/bi
 
 # Less
 export LESSHISTFILE=-
+
+# Scratch
+export SCRATCH="/data/scratch/$USER"
+
+# Shared
+export SHARED="/data/SBBS-BuschLab"
