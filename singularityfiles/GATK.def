@@ -1,9 +1,9 @@
 Bootstrap: docker
-From: broadinstitute/gatk:4.1.9.0
+From: broadinstitute/gatk:4.2.6.0
 
 %labels
     Author Ian Sealy
-    Version 4.1.9.0
+    Version 4.2.6.0
 
 %runscript
     /gatk/gatk "$@"
