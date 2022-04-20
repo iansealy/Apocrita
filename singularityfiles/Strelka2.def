@@ -1,0 +1,29 @@
+Bootstrap: library
+From: iansealy/alpine/alpine315:3.15.0
+
+%labels
+    Author Ian Sealy
+    Version 2.9.10
+
+%post
+    apk --no-cache add python2 bash boost1.77
+    apk --no-cache add --virtual build-dependencies build-base cmake curl boost1.77-dev boost1.77-static
+    curl -SsOL https://github.com/Illumina/strelka/releases/download/v2.9.10/strelka-2.9.10.release_src.tar.bz2
+    tar jxf strelka-2.9.10.release_src.tar.bz2
+    mkdir build
+    cd build
+    ../strelka-2.9.10.release_src/configure
+    make
+    make test
+    make install
+    apk del build-dependencies
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+
+%runscript
+    /bin/bash "$@"
+
+%help
+    Strelka2 - small variant caller
