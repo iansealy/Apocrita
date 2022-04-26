@@ -1,15 +1,15 @@
 Bootstrap: library
-From: iansealy/alpine/alpine311:3.11.3
+From: iansealy/alpine/alpine315:3.15.0
 
 %labels
     Author Ian Sealy
-    Version 1.51.0
+    Version 1.58.0
 
 %post
     apk --no-cache add --virtual build-dependencies go git
     git clone https://github.com/rclone/rclone.git
     cd rclone
-    git checkout tags/v1.51.0
+    git checkout tags/v1.58.0
     go build
     mkdir -p /usr/local/man/man1
     cp rclone /usr/local/bin
