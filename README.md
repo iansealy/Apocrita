@@ -38,8 +38,12 @@ ln -s pydoc3.9 pydoc
 ## Installing Python modules
 
 ```
-module load python/3.8.5
-pip install --prefix=/data/SBBS-BuschLab/python/Snakemake-7.3.1 snakemake==7.3.1
+module load python/3.9.12
+pip install snakemake==7.6.2
+pip install numpy==1.22.3
+pip install matplotlib==3.5.2
+pip install pysam==0.19.0
+pip install pandas==1.4.2
 ```
 
 ## Installing Snakemake
