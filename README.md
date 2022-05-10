@@ -29,6 +29,17 @@ module load gcc/10.2.0
 make
 make test EXTRATESTOPTS="-j1"
 make install
+cd /data/SBBS-BuschLab/Python-3.9.12/bin
+ln -s python3.9 python
+ln -s pip3.9 pip
+ln -s pydoc3.9 pydoc
+```
+
+## Installing Python modules
+
+```
+module load python/3.8.5
+pip install --prefix=/data/SBBS-BuschLab/python/Snakemake-7.3.1 snakemake==7.3.1
 ```
 
 ## Installing Snakemake
