@@ -1,0 +1,27 @@
+#%Module1.0
+conflict python Python
+prepend-path PATH /data/SBBS-BuschLab/Python-3.9.12/bin
+prepend-path MANPATH /data/SBBS-BuschLab/Python-3.9.12/share/man
+prepend-path LD_LIBRARY_PATH /data/SBBS-BuschLab/Python-3.9.12/lib
+prepend-path LIBRARY_PATH /data/SBBS-BuschLab/Python-3.9.12/lib
+prepend-path C_INCLUDE_PATH /data/SBBS-BuschLab/Python-3.9.12/include
+prepend-path CPLUS_INCLUDE_PATH /data/SBBS-BuschLab/Python-3.9.12/include
+prepend-path PKG_CONFIG_PATH /data/SBBS-BuschLab/Python-3.9.12/lib/pkgconfig
+prepend-path LIB /data/SBBS-BuschLab/Python-3.9.12/lib
+prepend-path PYTHONPATH /data/SBBS-BuschLab/Python-3.9.12/lib/python3.9
+
+if {[ module-info mode load ] && [ info exists ::env(NHOSTS) ] && [ info exists ::env(NSLOTS) ]} {
+  if {$::env(NHOSTS) == "1" && ![ info exists ::env(OMP_NUM_THREADS) ]} {
+    setenv OMP_NUM_THREADS $::env(NSLOTS)
+    puts stderr "Variable OMP_NUM_THREADS has been set to $::env(NSLOTS)"
+    setenv MODULE_ANACONDA_SET_OMP $::env(NSLOTS)
+  }
+}
+
+if {[ module-info mode unload ] && [ info exists ::env(MODULE_ANACONDA_SET_OMP) ]} {
+   if { $::env(OMP_NUM_THREADS) == $::env(MODULE_ANACONDA_SET_OMP) } {
+      unsetenv OMP_NUM_THREADS
+      puts stderr "Variable OMP_NUM_THREADS has been unset"
+   }
+   unsetenv MODULE_ANACONDA_SET_OMP
+}

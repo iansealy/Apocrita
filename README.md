@@ -15,6 +15,22 @@ chmod g+r /data/scratch/$USER
 exit
 ```
 
+## Installing Python
+
+```
+mkdir ~/src
+cd ~/src
+wget https://www.python.org/ftp/python/3.9.12/Python-3.9.12.tar.xz
+tar xf Python-3.9.12.tar.xz
+cd Python-3.9.12
+module purge
+module load gcc/10.2.0
+./configure --enable-optimizations --prefix=/data/SBBS-BuschLab/Python-3.9.12
+make
+make test EXTRATESTOPTS="-j1"
+make install
+```
+
 ## Installing Snakemake
 
 ```
