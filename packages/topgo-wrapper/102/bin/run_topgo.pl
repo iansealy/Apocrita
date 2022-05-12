@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-/usr/bin/singularity run --bind /data /data/SBBS-BuschLab/containers/topgo-wrapper-102.sif "$@"
+/usr/bin/singularity run --cleanenv --bind /data /data/SBBS-BuschLab/containers/topgo-wrapper-102.sif "$@"

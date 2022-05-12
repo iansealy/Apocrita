@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-/usr/bin/singularity run --bind /data /data/SBBS-BuschLab/containers/HOMER-4.11.1.sif "$@"
+/usr/bin/singularity run --cleanenv --bind /data /data/SBBS-BuschLab/containers/HOMER-4.11.1.sif "$@"

@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-/usr/bin/singularity run --bind /data --app bigWigInfo /data/SBBS-BuschLab/containers/kent-394.sif "$@"
+/usr/bin/singularity run --cleanenv --bind /data --app bigWigInfo /data/SBBS-BuschLab/containers/kent-394.sif "$@"
