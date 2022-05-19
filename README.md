@@ -15,37 +15,6 @@ chmod g+r /data/scratch/$USER
 exit
 ```
 
-## Installing Python
-
-```
-mkdir ~/src
-cd ~/src
-wget https://www.python.org/ftp/python/3.9.12/Python-3.9.12.tar.xz
-tar xf Python-3.9.12.tar.xz
-cd Python-3.9.12
-module purge
-module load gcc/10.2.0
-./configure --enable-optimizations --prefix=/data/SBBS-BuschLab/Python-3.9.12
-make
-make test EXTRATESTOPTS="-j1"
-make install
-cd /data/SBBS-BuschLab/Python-3.9.12/bin
-ln -s python3.9 python
-ln -s pip3.9 pip
-ln -s pydoc3.9 pydoc
-```
-
-## Installing Python modules
-
-```
-module load python/3.9.12
-pip install snakemake==7.6.2
-pip install numpy==1.22.3
-pip install matplotlib==3.5.2
-pip install pysam==0.19.0
-pip install pandas==1.4.2
-```
-
 ## Installing Snakemake
 
 ```
