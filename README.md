@@ -23,6 +23,12 @@ module load python/3.8.5
 pip install --prefix=/data/SBBS-BuschLab/python/Snakemake-7.3.1 snakemake==7.3.1
 ```
 
+```
+mkdir -p /data/SBBS-BuschLab/python/Snakemake-7.7.0
+module load python/3.8.5
+pip install --prefix=/data/SBBS-BuschLab/python/Snakemake-7.7.0 snakemake==7.7.0
+```
+
 ## Installing Python modules
 
 ```
