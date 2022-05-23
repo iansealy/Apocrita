@@ -8,13 +8,14 @@ From: iansealy/ubuntu/ubuntu1804:18.04
 %post
     apt-get -q update
     apt-get -q -y upgrade
+    echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections
     DEBIAN_FRONTEND=noninteractive apt-get -q -y install curl build-essential gfortran tzdata \
       texlive-latex-base texlive-fonts-extra libopenblas-base libopenblas-dev \
       libreadline7 libreadline-dev zlib1g zlib1g-dev libbz2-1.0 libbz2-dev liblzma5 liblzma-dev \
       libpcre2-8-0 libpcre2-16-0 libpcre2-32-0 libpcre2-posix0 libpcre2-dev \
       libcurl4 libcurl4-openssl-dev libpng16-16 libpng-dev libjpeg8 libjpeg8-dev \
       libtiff5 libtiff5-dev libcairo2 libcairo2-dev libicu60 libicu-dev \
-      libxml2 libxml2-dev libssl1.1 libssl-dev
+      libxml2 libxml2-dev libssl1.1 libssl-dev ttf-mscorefonts-installer
     curl -SsOL https://cran.r-project.org/src/base/R-4/R-4.2.0.tar.gz
     tar zxf R-4.2.0.tar.gz
     cd R-4.2.0
@@ -25,7 +26,7 @@ From: iansealy/ubuntu/ubuntu1804:18.04
     make install
     perl -spi -e 's/# (.*)\@CRAN\@(.*)/${1}https:\/\/cloud.r-project.org\/$2/' /usr/local/lib/R/library/base/R/Rprofile
     cd ..
-    rm -rf R-4.0.3*
+    rm -rf R-4.2.0*
     R --slave -e "update.packages(ask=FALSE)"
     R --slave -e "install.packages('tidyverse')"
     R --slave -e "install.packages('BiocManager')"
@@ -36,6 +37,16 @@ From: iansealy/ubuntu/ubuntu1804:18.04
     R --slave -e "install.packages('ggrepel')"
     R --slave -e "install.packages('optparse')"
     R --slave -e "install.packages('devtools')"
+    R --slave -e "install.packages('renv')"
+    R --slave -e "install.packages('gridExtra')"
+    R --slave -e "install.packages('patchwork')"
+    R --slave -e "install.packages('svglite')"
+    R --slave -e "install.packages('systemfonts')"
+    R --slave -e "install.packages('viridis')"
+    R --slave -e "install.packages('UpSetR')"
+    R --slave -e "devtools::install_github('richysix/biovisr@v0.1.7')"
+    R --slave -e "devtools::install_github('richysix/rnaseqtools@v0.0.0.9009')"
+    R --slave -e "devtools::install_github('richysix/miscr@v0.0.0.9005')"
     apt-get -q -y purge texlive-fonts-extra
     apt-get -q -y clean
     rm -rf /var/lib/apt/lists/*
