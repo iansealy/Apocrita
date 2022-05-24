@@ -1,13 +1,14 @@
 Bootstrap: library
-From: iansealy/alpine/alpine315:3.15.0
+From: iansealy/ubuntu/ubuntu2004:20.04
 
 %labels
     Author Ian Sealy
     Version 2.9.10
 
 %post
-    apk --no-cache add python2 bash gcompat
-    apk --no-cache add --virtual build-dependencies curl
+    apt-get -q update
+    apt-get -q -y upgrade
+    DEBIAN_FRONTEND=noninteractive apt-get -q -y install curl python2
     curl -SsOL https://github.com/Illumina/strelka/releases/download/v2.9.10/strelka-2.9.10.centos6_x86_64.tar.bz2
     tar jxf strelka-2.9.10.centos6_x86_64.tar.bz2
     mkdir -p /usr/local/bin /usr/local/lib /usr/local/libexec /usr/local/share
@@ -16,14 +17,16 @@ From: iansealy/alpine/alpine315:3.15.0
     cp -r strelka-2.9.10.centos6_x86_64/libexec/* /usr/local/libexec
     cp -r strelka-2.9.10.centos6_x86_64/share/* /usr/local/share
     rm -rf strelka-2.9.10.centos6_x86_64*
-    apk del build-dependencies
+    apt-get -q -y purge curl
+    apt-get -q -y clean
+    rm -rf /var/lib/apt/lists/*
 
 %environment
     export LANG=C.UTF-8
     export LC_ALL=C.UTF-8
 
 %runscript
-    /bin/bash "$@"
+    /usr/bin/bash "$@"
 
 %help
     Strelka2 - small variant caller
