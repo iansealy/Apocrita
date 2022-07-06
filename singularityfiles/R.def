@@ -3,7 +3,7 @@ From: iansealy/ubuntu/ubuntu1804:18.04
 
 %labels
     Author Ian Sealy
-    Version 4.2.0
+    Version 4.2.1
 
 %post
     apt-get -q update
@@ -16,9 +16,9 @@ From: iansealy/ubuntu/ubuntu1804:18.04
       libcurl4 libcurl4-openssl-dev libpng16-16 libpng-dev libjpeg8 libjpeg8-dev \
       libtiff5 libtiff5-dev libcairo2 libcairo2-dev libicu60 libicu-dev \
       libxml2 libxml2-dev libssl1.1 libssl-dev ttf-mscorefonts-installer
-    curl -SsOL https://cran.r-project.org/src/base/R-4/R-4.2.0.tar.gz
-    tar zxf R-4.2.0.tar.gz
-    cd R-4.2.0
+    curl -SsOL https://cran.r-project.org/src/base/R-4/R-4.2.1.tar.gz
+    tar zxf R-4.2.1.tar.gz
+    cd R-4.2.1
     ./configure --disable-java --with-blas --without-x
     make
     make check
@@ -26,7 +26,7 @@ From: iansealy/ubuntu/ubuntu1804:18.04
     make install
     perl -spi -e 's/# (.*)\@CRAN\@(.*)/${1}https:\/\/cloud.r-project.org\/$2/' /usr/local/lib/R/library/base/R/Rprofile
     cd ..
-    rm -rf R-4.2.0*
+    rm -rf R-4.2.1*
     R --slave -e "update.packages(ask=FALSE)"
     R --slave -e "install.packages('tidyverse')"
     R --slave -e "install.packages('BiocManager')"
@@ -35,6 +35,8 @@ From: iansealy/ubuntu/ubuntu1804:18.04
     R --slave -e "BiocManager::install('apeglm')"
     R --slave -e "install.packages('pheatmap')"
     R --slave -e "install.packages('ggrepel')"
+    R --slave -e "install.packages('ggdendro')"
+    R --slave -e "install.packages('ggridges')"
     R --slave -e "install.packages('optparse')"
     R --slave -e "install.packages('devtools')"
     R --slave -e "install.packages('renv')"
