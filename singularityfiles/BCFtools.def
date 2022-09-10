@@ -3,20 +3,20 @@ From: iansealy/alpine/alpine311:3.11.3
 
 %labels
     Author Ian Sealy
-    Version 1.15.1
+    Version 1.16
 
 %post
     apk --no-cache add libcurl ncurses-libs zlib libbz2 xz-libs perl
     apk --no-cache add --virtual build-dependencies build-base curl curl-dev ncurses-dev zlib-dev bzip2-dev xz-dev perl-dev bash
-    curl -SsOL https://github.com/samtools/bcftools/releases/download/1.15.1/bcftools-1.15.1.tar.bz2
-    tar jxf bcftools-1.15.1.tar.bz2
-    cd bcftools-1.15.1
+    curl -SsOL https://github.com/samtools/bcftools/releases/download/1.16/bcftools-1.16.tar.bz2
+    tar jxf bcftools-1.16.tar.bz2
+    cd bcftools-1.16
     ./configure --enable-perl-filters
     make
     make test
     make install
     cd ..
-    rm -rf bcftools-1.15.1*
+    rm -rf bcftools-1.16*
     apk del build-dependencies
 
 %environment
