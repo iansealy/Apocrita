@@ -1,0 +1,3 @@
+#%Module1.0
+# Ensembl-108.sif
+prepend-path PATH /data/SBBS-BuschLab/packages/Ensembl/108/bin
