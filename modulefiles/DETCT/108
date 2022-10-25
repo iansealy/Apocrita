@@ -1,0 +1,3 @@
+#%Module1.0
+# DETCT-108.sif
+prepend-path PATH /data/SBBS-BuschLab/packages/DETCT/108/bin
