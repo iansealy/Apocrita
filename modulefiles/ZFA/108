@@ -1,0 +1,3 @@
+#%Module1.0
+# ZFA-108.sif
+prepend-path PATH /data/SBBS-BuschLab/packages/ZFA/108/bin
