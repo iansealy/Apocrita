@@ -1,5 +1,5 @@
-Bootstrap: library
-From: iansealy/ubuntu/ubuntu2004:20.04
+Bootstrap: localimage
+From: /data/SBBS-BuschLab/containers/Ubuntu-20.04.sif
 
 %labels
     Author Ian Sealy

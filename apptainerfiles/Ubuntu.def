@@ -6,7 +6,7 @@ Bootstrap: scratch
 
 %setup
     wget -O - "https://partner-images.canonical.com/core/jammy/current/ubuntu-jammy-core-cloudimg-amd64-root.tar.gz" \
-        | tar zx -C "$SINGULARITY_ROOTFS" --exclude=dev --exclude=etc/resolv.conf
+        | tar zx -C "$APPTAINER_ROOTFS" --exclude=dev --exclude=etc/resolv.conf --no-same-owner
 
 %help
     Ubuntu

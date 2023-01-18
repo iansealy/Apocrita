@@ -1,5 +1,5 @@
-Bootstrap: library
-From: iansealy/ubuntu/ubuntu1804:18.04
+Bootstrap: localimage
+From: /data/SBBS-BuschLab/containers/Ubuntu-18.04.sif
 
 %labels
     Author Ian Sealy
