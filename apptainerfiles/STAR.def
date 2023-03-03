@@ -3,14 +3,14 @@ From: /data/SBBS-BuschLab/containers/Alpine-3.11.3.sif
 
 %labels
     Author Ian Sealy
-    Version 2.7.10a
+    Version 2.7.10b
 
 %post
     apk --no-cache add --virtual build-dependencies curl
-    curl -SsOL https://github.com/alexdobin/STAR/archive/2.7.10a.tar.gz
-    tar zxf 2.7.10a.tar.gz
-    cp STAR-2.7.10a/bin/Linux_x86_64_static/STAR /usr/local/bin
-    rm -rf 2.7.10a.tar.gz STAR-2.7.10a
+    curl -SsOL https://github.com/alexdobin/STAR/archive/2.7.10b.tar.gz
+    tar zxf 2.7.10b.tar.gz
+    cp STAR-2.7.10b/bin/Linux_x86_64_static/STAR /usr/local/bin
+    rm -rf 2.7.10b.tar.gz STAR-2.7.10b
     apk del build-dependencies
 
 %environment
