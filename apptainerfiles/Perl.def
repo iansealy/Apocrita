@@ -1,5 +1,5 @@
-Bootstrap: library
-From: iansealy/alpine/alpine315:3.15.0
+Bootstrap: localimage
+From: /data/SBBS-BuschLab/containers/Alpine-3.15.0.sif
 
 %labels
     Author Ian Sealy
