@@ -1,0 +1,3 @@
+#%Module1.0
+# MultiQC-1.14.sif
+prepend-path PATH /data/SBBS-BuschLab/packages/MultiQC/1.14/bin

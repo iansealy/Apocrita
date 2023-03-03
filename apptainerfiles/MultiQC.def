@@ -1,14 +1,14 @@
 Bootstrap: localimage
-From: /data/SBBS-BuschLab/containers/Alpine-3.11.3.sif
+From: /data/SBBS-BuschLab/containers/Alpine-3.17.1.sif
 
 %labels
     Author Ian Sealy
-    Version 1.10.1
+    Version 1.14
 
 %post
     apk --no-cache add libpng jpeg freetype python3 py3-numpy libstdc++
-    apk --no-cache add --virtual build-dependencies build-base libpng-dev jpeg-dev freetype-dev python3-dev py3-numpy-dev
-    pip3 install multiqc==1.10.1
+    apk --no-cache add --virtual build-dependencies build-base libpng-dev jpeg-dev freetype-dev python3-dev py3-pip py3-numpy-dev
+    pip3 install multiqc==1.14
     apk del build-dependencies
 
 %environment
