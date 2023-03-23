@@ -6,8 +6,8 @@ From: /data/SBBS-BuschLab/containers/Alpine-3.17.1.sif
     Version 1.14
 
 %post
-    apk --no-cache add libpng jpeg freetype python3 py3-numpy libstdc++
-    apk --no-cache add --virtual build-dependencies build-base libpng-dev jpeg-dev freetype-dev python3-dev py3-pip py3-numpy-dev
+    apk --no-cache add libpng jpeg freetype python3 py3-pip py3-numpy py3-matplotlib libstdc++
+    apk --no-cache add --virtual build-dependencies build-base libpng-dev jpeg-dev freetype-dev python3-dev py3-numpy-dev
     pip3 install multiqc==1.14
     apk del build-dependencies
 
