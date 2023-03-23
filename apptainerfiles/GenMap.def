@@ -1,0 +1,26 @@
+Bootstrap: localimage
+From: /data/SBBS-BuschLab/containers/Alpine-3.17.1.sif
+
+%labels
+    Author Ian Sealy
+    Version 1.3.0
+
+%post
+    apk --no-cache add gcompat libgomp
+    apk --no-cache add --virtual build-dependencies curl unzip
+    curl -SsOL https://github.com/cpockrandt/genmap/releases/download/genmap-v1.3.0/genmap-1.3.0-Linux-x86_64-sse4.zip
+    unzip genmap-1.3.0-Linux-x86_64-sse4.zip
+    chmod +x genmap
+    mv genmap /usr/local/bin
+    rm genmap-1.3.0-Linux-x86_64-sse4.zip
+    apk del build-dependencies
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+
+%runscript
+    /usr/local/bin/genmap "$@"
+
+%help
+    GenMap - computation of genome mappability
