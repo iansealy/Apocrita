@@ -6,7 +6,7 @@ From: /data/SBBS-BuschLab/containers/Alpine-3.11.3.sif
     Version 108
 
 %post
-    apk --no-cache add perl perl-dbd-mysql perl-try-tiny perl-io-gzip perl-json libcurl zlib libbz2 xz-libs
+    apk --no-cache add perl perl-dbd-mysql perl-try-tiny perl-io-gzip perl-json perl-libwww libcurl zlib libbz2 xz-libs
     apk --no-cache add --virtual build-dependencies build-base git perl-dev perl-module-build perl-app-cpanminus wget curl curl-dev zlib-dev bzip2-dev xz-dev bash
     git clone -b release-1-6-924 https://github.com/bioperl/bioperl-live.git
     mv bioperl-live/Bio* /usr/local/lib/perl5/site_perl
