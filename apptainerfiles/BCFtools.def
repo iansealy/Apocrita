@@ -3,20 +3,20 @@ From: /data/SBBS-BuschLab/containers/Alpine-3.11.3.sif
 
 %labels
     Author Ian Sealy
-    Version 1.17
+    Version 1.18
 
 %post
     apk --no-cache add libcurl ncurses-libs zlib libbz2 xz-libs perl
     apk --no-cache add --virtual build-dependencies build-base curl curl-dev ncurses-dev zlib-dev bzip2-dev xz-dev perl-dev bash
-    curl -SsOL https://github.com/samtools/bcftools/releases/download/1.17/bcftools-1.17.tar.bz2
-    tar jxf bcftools-1.17.tar.bz2
-    cd bcftools-1.17
+    curl -SsOL https://github.com/samtools/bcftools/releases/download/1.18/bcftools-1.18.tar.bz2
+    tar jxf bcftools-1.18.tar.bz2
+    cd bcftools-1.18
     ./configure --enable-perl-filters
     make
     make test
     make install
     cd ..
-    rm -rf bcftools-1.17*
+    rm -rf bcftools-1.18*
     apk del build-dependencies
 
 %environment
