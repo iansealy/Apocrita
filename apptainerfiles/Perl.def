@@ -1,9 +1,9 @@
 Bootstrap: localimage
-From: /data/SBBS-BuschLab/containers/Alpine-3.15.0.sif
+From: /data/SBBS-BuschLab/containers/Alpine-3.18.3.sif
 
 %labels
     Author Ian Sealy
-    Version 5.43.0
+    Version 5.36.1
 
 %post
     apk --no-cache add perl perl-list-moreutils perl-readonly perl-path-tiny perl-strictures perl-sereal perl-dbi perl-dbd-mysql perl-try-tiny perl-moo perl-type-tiny
@@ -14,8 +14,8 @@ From: /data/SBBS-BuschLab/containers/Alpine-3.15.0.sif
     cpanm indirect multidimensional bareword::filehandles
     apk del build-dependencies
     echo '#!/usr/bin/env sh
-if [ -d "$HOME/perl5.43.0" ]; then
-  perl -I$HOME/perl5.43.0 "$@"
+if [ -d "$HOME/perl5.36.1" ]; then
+  perl -I$HOME/perl5.36.1 "$@"
 elif [ -d "$HOME/perl5" ]; then
   perl -I$HOME/perl5 "$@"
 else
