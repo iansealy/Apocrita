@@ -3,7 +3,7 @@ From: /data/SBBS-BuschLab/containers/Ubuntu-18.04.sif
 
 %labels
     Author Ian Sealy
-    Version 0.1.56
+    Version 0.1.57
 
 %post
     apt-get -q update
@@ -19,9 +19,9 @@ From: /data/SBBS-BuschLab/containers/Ubuntu-18.04.sif
     R --slave -e "BiocManager::install()"
     R --slave -e "BiocManager::install('topGO')"
     R --slave -e "BiocManager::install('Rgraphviz')"
-    curl -SsOL https://github.com/iansealy/topgo-wrapper/releases/download/v0.1.56/topgo-wrapper-0.1.56.tar.gz
-    tar zxf topgo-wrapper-0.1.56.tar.gz
-    cd topgo-wrapper-0.1.56
+    curl -SsOL https://github.com/iansealy/topgo-wrapper/releases/download/v0.1.57/topgo-wrapper-0.1.57.tar.gz
+    tar zxf topgo-wrapper-0.1.57.tar.gz
+    cd topgo-wrapper-0.1.57
     perl Makefile.PL
     make
     make test
@@ -30,7 +30,7 @@ From: /data/SBBS-BuschLab/containers/Ubuntu-18.04.sif
     mv data /usr/local/share/topgo-wrapper
     find /usr/local/share/topgo-wrapper -type f | grep -v e110 | xargs rm
     cd ..
-    rm -rf topgo-wrapper-0.1.56*
+    rm -rf topgo-wrapper-0.1.57*
     apt-get -q -y purge gnupg software-properties-common build-essential curl r-base-dev libmodule-build-perl
     apt-get -q -y autoremove
     apt-get -q -y clean
