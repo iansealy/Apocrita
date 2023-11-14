@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+/usr/bin/apptainer run --cleanenv --bind /data /data/SBBS-BuschLab/containers/ASCIIGenome-1.18.0.sif "$@"

@@ -1,0 +1,3 @@
+#%Module1.0
+# ASCIIGenome-1.18.0.sif
+prepend-path PATH /data/SBBS-BuschLab/packages/ASCIIGenome/1.18.0/bin

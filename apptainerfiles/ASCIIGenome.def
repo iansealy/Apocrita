@@ -1,0 +1,25 @@
+Bootstrap: localimage
+From: /data/SBBS-BuschLab/containers/Alpine-3.11.3.sif
+
+%labels
+    Author Ian Sealy
+    Version 1.18.0
+
+%post
+    apk --no-cache add openjdk8-jre bash gawk
+    apk --no-cache add --virtual build-dependencies curl unzip
+    curl -SsOL https://github.com/dariober/ASCIIGenome/releases/download/v1.18.0/ASCIIGenome-1.18.0.zip
+    unzip ASCIIGenome-1.18.0.zip
+    cp ASCIIGenome-1.18.0/ASCIIGenome* /usr/local/bin
+    rm -rf ASCIIGenome-1.18.0*
+    apk del build-dependencies
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+
+%runscript
+    /usr/local/bin/ASCIIGenome "$@"
+
+%help
+    ASCIIGenome - text-only genome viewer
