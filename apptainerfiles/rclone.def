@@ -3,13 +3,13 @@ From: /data/SBBS-BuschLab/containers/Alpine-3.17.1.sif
 
 %labels
     Author Ian Sealy
-    Version 1.62.2
+    Version 1.65.2
 
 %post
     apk --no-cache add --virtual build-dependencies go git
     git clone https://github.com/rclone/rclone.git
     cd rclone
-    git checkout tags/v1.62.2
+    git checkout tags/v1.65.2
     go build
     mkdir -p /usr/local/man/man1
     cp rclone /usr/local/bin
