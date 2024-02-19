@@ -1,0 +1,140 @@
+Bootstrap: library
+From: iansealy/alpine/alpine311:3.11.3
+
+%labels
+    Author Richard White
+    Version 0.1.22
+
+%post
+    apk --no-cache add perl perl-dbd-mysql perl-try-tiny perl-uri perl-config-inifiles perl-list-moreutils perl-path-tiny perl-readonly libcurl ncurses-libs zlib libbz2 xz-libs
+    apk --no-cache add --virtual build-dependencies build-base git perl-dev perl-module-build perl-app-cpanminus wget curl curl-dev ncurses-dev zlib-dev bzip2-dev xz-dev bash
+    apk --no-cache add mysql mysql-client sqlite
+
+    git clone -b release-1-6-924 https://github.com/bioperl/bioperl-live.git
+    mv bioperl-live/Bio* /usr/local/lib/perl5/site_perl
+    git clone -b release/111 https://github.com/Ensembl/ensembl.git
+    mv ensembl/modules/Bio/EnsEMBL /usr/local/lib/perl5/site_perl/Bio
+    git clone -b release/111 https://github.com/Ensembl/ensembl-variation.git
+    mv ensembl-variation/modules/Bio/EnsEMBL/Variation /usr/local/lib/perl5/site_perl/Bio/EnsEMBL
+    rm -rf bioperl-live ensembl ensembl-variation
+    
+    curl -SsOL https://github.com/samtools/htslib/releases/download/1.19.1/htslib-1.19.1.tar.bz2
+    tar jxf htslib-1.19.1.tar.bz2
+    cd htslib-1.19.1
+    ./configure --prefix=/usr/local
+    make
+    make test
+    make install
+    cd ..
+    rm -rf htslib-1.19.1*
+
+    cpanm Bio::DB::HTS
+    
+    # Install samtools
+    curl -SsL --output samtools-1.19.2.tar.bz2 https://github.com/samtools/samtools/releases/download/1.19.2/samtools-1.19.2.tar.bz2
+    tar jxf samtools-1.19.2.tar.bz2
+    cd samtools-1.19.2
+    ./configure --prefix=/usr/local
+    make
+    make install
+    cd ..
+    rm -rf samtools-1.19.2*
+
+    # install bwa
+    curl -SsOL https://github.com/lh3/bwa/releases/download/v0.7.17/bwa-0.7.17.tar.bz2
+    tar jxf bwa-0.7.17.tar.bz2
+    cd bwa-0.7.17
+    make
+    mkdir -p /usr/local/man/man1
+    cp bwa /usr/local/bin
+    cp bwa.1 /usr/local/man/man1
+    cd ..
+    rm -rf bwa-0.7.17*
+    
+    # install Primer3
+    apk --no-cache add libstdc++ libgcc
+    curl -SsOL https://github.com/primer3-org/primer3/archive/v2.5.0.tar.gz
+    tar zxf v2.5.0.tar.gz
+    cd primer3-2.5.0/src
+    make
+    make test
+    cp primer3_core ntdpal ntthal oligotm long_seq_tm_test primer3_masker /usr/local/bin
+    cp -r primer3_config /usr/local/bin/
+    cp -r primer3_config /usr/local/share
+    cp -r primer3_config /opt/
+    cd ../..
+    rm -rf primer3-2.5.0 v2.5.0.tar.gz
+
+    # Install required Perl modules
+    cpanm Moose
+    cpanm DBIx::Connector
+    cpanm Test::Exception Test::MockObject Test::DatabaseRow
+    cpanm Set::IntervalTree Clone
+    cpanm File::Which File::Slurp File::Find::Rule
+    cpanm Hash::Merge List::MoreUtils
+    cpanm --force Number::Format
+    cpanm YAML::Tiny DateTime Readonly
+    
+    # Install the PCR, Labware and Tree modules
+    curl -SsOL https://github.com/richysix/PCR/releases/download/v0.2.3/PCR-0.2.3.tar.gz
+    tar -xzf PCR-0.2.3.tar.gz
+    cd PCR-0.2.3
+    perl Makefile.PL
+    make
+    make test
+    make install
+    cd ..
+    rm -rf PCR-0.2.3*
+    
+    curl -SsOL https://github.com/richysix/Labware/releases/download/v0.0.4/Labware-0.0.4.tar.gz
+    tar -xzf Labware-0.0.4.tar.gz
+    cd Labware-0.0.4
+    perl Makefile.PL
+    make
+    make test
+    make install
+    cd ..
+    rm -rf Labware-0.0.4*
+    
+    curl -SsOL https://github.com/richysix/Tree/releases/download/v0.1.3/Tree-0.1.3.tar.gz
+    tar -xzf Tree-0.1.3.tar.gz
+    cd Tree-0.1.3
+    perl Makefile.PL
+    make
+    make test
+    make install
+    cd ..
+    rm -rf Tree-0.1.3*
+    
+    # Download the latest Crispr release from github
+    curl -SsOL https://github.com/richysix/Crispr/releases/download/v0.1.22/Crispr-0.1.22.tar.gz
+    tar -xzf Crispr-0.1.22.tar.gz
+    cd Crispr-0.1.22
+    perl Makefile.PL
+    make
+    make test
+    make install
+    cd ..
+    rm -rf Crispr-0.1.22*
+    
+    apk del build-dependencies
+
+    echo '#!/usr/bin/env sh
+if [ -d "$HOME/perl5-ensembl-111" ]; then
+  perl -I$HOME/perl5-ensembl-111 "$@"
+elif [ -d "$HOME/perl5" ]; then
+  perl -I$HOME/perl5 "$@"
+else
+  perl "$@"
+fi' > /usr/bin/wrapper
+    chmod +x /usr/bin/wrapper
+
+%environment
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+
+%runscript
+    /usr/bin/wrapper "$@"
+
+%help
+    Crispr 0.1.22 - Crispr modules, plus Ensembl API (release 111) and other required binaries
