@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+/usr/bin/apptainer run --cleanenv --bind /data /data/SBBS-BuschLab/containers/Crispr-0.1.22-e111.sif "$@"
+
