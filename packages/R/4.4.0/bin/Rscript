@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+/usr/bin/apptainer run --cleanenv --bind /data --app Rscript /data/SBBS-BuschLab/containers/R-4.4.0.sif "$@"
