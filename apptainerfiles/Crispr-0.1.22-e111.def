@@ -1,5 +1,5 @@
-Bootstrap: library
-From: iansealy/alpine/alpine311:3.11.3
+Bootstrap: localimage
+From: /data/SBBS-BuschLab/containers/Alpine-3.11.3.sif
 
 %labels
     Author Richard White
