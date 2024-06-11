@@ -2,10 +2,10 @@ Bootstrap: scratch
 
 %labels
     Author Ian Sealy
-    Version 22.04
+    Version 24.04
 
 %setup
-    wget -O - "https://partner-images.canonical.com/core/jammy/current/ubuntu-jammy-core-cloudimg-amd64-root.tar.gz" \
+    wget -O - "https://partner-images.canonical.com/oci/noble/current/ubuntu-noble-oci-amd64-root.tar.gz" \
         | tar zx -C "$APPTAINER_ROOTFS" --exclude=dev --exclude=etc/resolv.conf --no-same-owner
 
 %help
