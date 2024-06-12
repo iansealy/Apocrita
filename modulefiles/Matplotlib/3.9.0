@@ -1,0 +1,4 @@
+#%Module1.0
+module load NumPy/1.26.4
+conflict Python
+append-path PYTHONPATH /data/SBBS-BuschLab/python/Matplotlib-3.9.0/lib/python3.11/site-packages

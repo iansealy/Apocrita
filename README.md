@@ -49,6 +49,24 @@ module load NumPy/1.22.3
 pip install --prefix=/data/SBBS-BuschLab/python/pandas-1.4.2 pandas==1.4.2
 ```
 
+```
+mkdir -p /data/SBBS-BuschLab/python/NumPy-1.26.4
+module load python/3.11.6
+pip install --prefix=/data/SBBS-BuschLab/python/NumPy-1.26.4 numpy==1.26.4
+
+mkdir -p /data/SBBS-BuschLab/python/Matplotlib-3.9.0
+module load NumPy/1.26.4
+pip install --prefix=/data/SBBS-BuschLab/python/Matplotlib-3.9.0 matplotlib==3.9.0
+
+mkdir -p /data/SBBS-BuschLab/python/pysam-0.22.1
+module load python/3.11.6
+pip install --prefix=/data/SBBS-BuschLab/python/pysam-0.22.1 pysam==0.22.1
+
+mkdir -p /data/SBBS-BuschLab/python/pandas-2.2.2
+module load NumPy/1.26.4
+pip install --prefix=/data/SBBS-BuschLab/python/pandas-2.2.2 pandas==2.2.2
+```
+
 (A Python Singularity container is also available.)
 
 ## Useful Info
