@@ -65,6 +65,11 @@ pip install --prefix=/data/SBBS-BuschLab/python/pysam-0.22.1 pysam==0.22.1
 mkdir -p /data/SBBS-BuschLab/python/pandas-2.2.2
 module load NumPy/1.26.4
 pip install --prefix=/data/SBBS-BuschLab/python/pandas-2.2.2 pandas==2.2.2
+
+mkdir -p /data/SBBS-BuschLab/python/polars-0.20.31
+module load NumPy/1.26.4
+module load pandas/2.2.2
+pip install --prefix=/data/SBBS-BuschLab/python/polars-0.20.31 polars==0.20.31
 ```
 
 (A Python Singularity container is also available.)
