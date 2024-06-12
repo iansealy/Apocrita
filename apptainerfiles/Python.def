@@ -1,24 +1,33 @@
 Bootstrap: localimage
-From: /data/SBBS-BuschLab/containers/Alpine-3.15.0.sif
+From: /data/SBBS-BuschLab/containers/Ubuntu-24.04.sif
 
 %labels
     Author Ian Sealy
-    Version 3.9.7
+    Version 3.12.4
 
 %post
-    apk --no-cache add python3 python3-doc py3-numpy py3-pandas py3-matplotlib py3-scipy py3-jinja2 zlib libbz2 xz-libs
-    apk --no-cache add --virtual build-dependencies build-base python3-dev py3-pip zlib-dev bzip2-dev xz-dev
-    pip3 install pysam==0.19.0
-    pip3 install seaborn==0.11.2
-    pip3 install networkx==2.7.1
-    apk del build-dependencies
+    apt-get -q update
+    apt-get -q -y upgrade
+    DEBIAN_FRONTEND=noninteractive apt-get -q -y install build-essential curl gdebi
+    curl -SsOL https://cdn.rstudio.com/python/ubuntu-2404/pkgs/python-3.12.4_1_amd64.deb
+    gdebi --n python-3.12.4_1_amd64.deb
+    rm python-3.12.4_1_amd64.deb
+    /opt/python/3.12.4/bin/pip3.12 install numpy==1.26.4
+    /opt/python/3.12.4/bin/pip3.12 install pandas==2.2.2
+    /opt/python/3.12.4/bin/pip3.12 install polars==0.20.31
+    /opt/python/3.12.4/bin/pip3.12 install matplotlib==3.9.0
+    /opt/python/3.12.4/bin/pip3.12 install seaborn==0.13.2
+    /opt/python/3.12.4/bin/pip3.12 install scipy==1.13.1
+    /opt/python/3.12.4/bin/pip3.12 install pysam==0.22.1
+    /opt/python/3.12.4/bin/pip3.12 install networkx==3.3
+    apt-get -q -y purge build-essential curl gdebi
 
 %environment
     export LANG=C.UTF-8
     export LC_ALL=C.UTF-8
 
 %runscript
-    /usr/bin/python3 "$@"
+    /opt/python/3.12.4/bin/python3.12 "$@"
 
 %help
     Python - General purpose progamming language, plus some modules
