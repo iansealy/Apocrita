@@ -1,3 +1,6 @@
 #%Module1.0
 # Crispr-0.1.22-112.sif
 prepend-path PATH /data/SBBS-BuschLab/packages/Crispr/0.1.22-112/bin
+if [ module-info mode load ] {
+    puts stderr "WARNING: The Danio rerio annotation in Ensembl 112 is incomplete"
+}
