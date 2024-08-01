@@ -1,0 +1,6 @@
+#%Module1.0
+# topgo-wrapper-112.sif
+prepend-path PATH /data/SBBS-BuschLab/packages/topgo-wrapper/112/bin
+if [ module-info mode load ] {
+    puts stderr "WARNING: The Danio rerio annotation in Ensembl 112 is incomplete"
+}
