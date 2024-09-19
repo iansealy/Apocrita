@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+/usr/bin/apptainer run --cleanenv --bind /data --app bgzip /data/SBBS-BuschLab/containers/HTSlib-1.21.sif "$@"
