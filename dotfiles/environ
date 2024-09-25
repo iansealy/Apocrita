@@ -18,3 +18,9 @@ export SCRATCH="/data/scratch/$USER"
 
 # Shared
 export SHARED="/data/SBBS-BuschLab"
+
+# Apptainer
+export APPTAINER_CACHEDIR=/data/scratch/$USER/.apptainer/
+export APPTAINER_TMPDIR=/data/scratch/$USER/.apptainer/tmp
+export APPTAINER_LOCALCACHEDIR=/data/scratch/$USER/.apptainer/localcache
+export APPTAINER_PULLFOLDER=/data/scratch/$USER/.apptainer/pull
