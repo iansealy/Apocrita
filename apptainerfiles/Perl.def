@@ -1,21 +1,21 @@
 Bootstrap: localimage
-From: /data/SBBS-BuschLab/containers/Alpine-3.18.3.sif
+From: /data/SBBS-BuschLab/containers/Alpine-3.20.0.sif
 
 %labels
     Author Ian Sealy
-    Version 5.36.1
+    Version 5.38.2
 
 %post
-    apk --no-cache add perl perl-list-moreutils perl-readonly perl-path-tiny perl-strictures perl-sereal perl-dbi perl-dbd-mysql perl-try-tiny perl-moo perl-type-tiny
+    apk --no-cache add perl perl-list-moreutils perl-readonly perl-path-tiny perl-strictures perl-sereal perl-dbi perl-dbd-mysql perl-try-tiny perl-moo perl-type-tiny perl-sort-key
     apk --no-cache add --virtual build-dependencies build-base git wget perl-dev perl-app-cpanminus
     git clone -b release-1-6-924 https://github.com/bioperl/bioperl-live.git
     mv bioperl-live/Bio* /usr/local/lib/perl5/site_perl
     rm -rf bioperl-live
-    cpanm indirect multidimensional bareword::filehandles
+    cpanm indirect multidimensional bareword::filehandles Text::ASCIITable
     apk del build-dependencies
     echo '#!/usr/bin/env sh
-if [ -d "$HOME/perl5.36.1" ]; then
-  perl -I$HOME/perl5.36.1 "$@"
+if [ -d "$HOME/perl5.38.2" ]; then
+  perl -I$HOME/perl5.38.2 "$@"
 elif [ -d "$HOME/perl5" ]; then
   perl -I$HOME/perl5 "$@"
 else
