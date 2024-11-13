@@ -3,12 +3,12 @@ From: /data/SBBS-BuschLab/containers/Alpine-3.17.1.sif
 
 %labels
     Author Ian Sealy
-    Version 1.14
+    Version 1.25.1
 
 %post
     apk --no-cache add libpng jpeg freetype python3 py3-pip py3-numpy py3-matplotlib libstdc++
     apk --no-cache add --virtual build-dependencies build-base libpng-dev jpeg-dev freetype-dev python3-dev py3-numpy-dev
-    pip3 install multiqc==1.14
+    pip3 install multiqc==1.25.1
     apk del build-dependencies
 
 %environment
