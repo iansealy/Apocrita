@@ -1,0 +1,6 @@
+#%Module1.0
+# DETCT-113.sif
+prepend-path PATH /data/SBBS-BuschLab/packages/DETCT/113/bin
+if [ module-info mode load ] {
+    puts stderr "WARNING: The Danio rerio annotation in Ensembl 113 is incomplete"
+}
