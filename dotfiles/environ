@@ -7,8 +7,14 @@ export LC_ALL=C
 # Modulefiles
 export MODULEPATH="$MODULEPATH:/data/SBBS-BuschLab/modulefiles"
 
-# Personal bin, shared bin and nano
-export PATH="$HOME/bin:/data/SBBS-BuschLab/scripts:/data/SBBS-BuschLab/bin:$HOME/.cargo/bin:/share/apps/centos7/nano/2.8.6/bin:$PATH"
+# Personal bin, shared bin, cargo and nano
+export PATH="$HOME/bin:/data/SBBS-BuschLab/scripts:/data/SBBS-BuschLab/bin:$HOME/.cargo/bin:$PATH"
+if grep -q 'CentOS' /etc/os-release; then
+  export PATH="/share/apps/centos7/nano/2.8.6/bin:$PATH"
+fi
+if grep -q 'Rocky' /etc/os-release; then
+  export PATH="/share/apps/rocky9/spack/apps/linux-rocky9-x86_64_v4/gcc-12.2.0/nano/7.2-4ew6nde/bin:$PATH"
+fi
 
 # Less
 export LESSHISTFILE=-
