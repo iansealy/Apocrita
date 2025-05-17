@@ -1,0 +1,6 @@
+#%Module1.0
+# Ensembl-Genomes-114.sif
+prepend-path PATH /data/SBBS-BuschLab/packages/Ensembl-Genomes/114/bin
+if [ module-info mode load ] {
+    puts stderr "WARNING: The Danio rerio annotation in Ensembl 114 is incomplete"
+}
