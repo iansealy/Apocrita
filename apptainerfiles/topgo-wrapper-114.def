@@ -1,5 +1,5 @@
 Bootstrap: localimage
-From: /data/SBBS-BuschLab/containers/Ubuntu-18.04.sif
+From: /data/SBBS-BuschLab/containers/Ubuntu-24.04.sif
 
 %labels
     Author Ian Sealy
@@ -10,10 +10,10 @@ From: /data/SBBS-BuschLab/containers/Ubuntu-18.04.sif
     apt-get -q -y upgrade
     apt-get -q -y install gnupg ca-certificates software-properties-common
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
-    add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran35/"
+    add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu noble-cran40/"
     apt-get -q update
     apt-get -q -y upgrade
-    DEBIAN_FRONTEND=noninteractive apt-get -q -y install build-essential curl r-base r-base-dev libpath-tiny-perl libreadonly-perl libreadonly-xs-perl libtry-tiny-perl libmodule-build-perl
+    DEBIAN_FRONTEND=noninteractive apt-get -q -y install build-essential curl libcurl4-openssl-dev r-base r-base-dev libssl-dev libpath-tiny-perl libreadonly-perl libreadonly-xs-perl libtry-tiny-perl libmodule-build-perl
     R --slave -e "update.packages(ask=FALSE)"
     R --slave -e "install.packages('BiocManager')"
     R --slave -e "BiocManager::install()"
@@ -31,7 +31,7 @@ From: /data/SBBS-BuschLab/containers/Ubuntu-18.04.sif
     find /usr/local/share/topgo-wrapper -type f | grep -v e114 | xargs rm
     cd ..
     rm -rf topgo-wrapper-0.1.62*
-    apt-get -q -y purge gnupg software-properties-common build-essential curl r-base-dev libmodule-build-perl
+    apt-get -q -y purge gnupg software-properties-common build-essential curl libcurl4-openssl-dev r-base-dev libssl-dev libmodule-build-perl
     apt-get -q -y autoremove
     apt-get -q -y clean
     rm -rf /var/lib/apt/lists/*
