@@ -1,5 +1,5 @@
 Bootstrap: localimage
-From: /data/SBBS-BuschLab/containers/Ubuntu-18.04.sif
+From: /data/SBBS-BuschLab/containers/Ubuntu-24.04.sif
 
 %labels
     Author Ian Sealy
@@ -8,32 +8,19 @@ From: /data/SBBS-BuschLab/containers/Ubuntu-18.04.sif
 %post
     apt-get -q update
     apt-get -q -y upgrade
-    DEBIAN_FRONTEND=noninteractive apt-get -q -y install curl build-essential gfortran tzdata \
-      texlive-latex-base texlive-fonts-extra libopenblas-base libopenblas-dev \
-      libreadline7 libreadline-dev zlib1g zlib1g-dev libbz2-1.0 libbz2-dev liblzma5 liblzma-dev \
-      libpcre2-8-0 libpcre2-16-0 libpcre2-32-0 libpcre2-posix0 libpcre2-dev \
-      libcurl4 libcurl4-openssl-dev libpng16-16 libpng-dev libjpeg8 libjpeg8-dev \
-      libtiff5 libtiff5-dev libcairo2 libcairo2-dev libicu60 libicu-dev \
-      libxml2 libxml2-dev libssl1.1 libssl-dev tcl tcl-dev tk tk-dev \
-      libncurses5-dev libncursesw5-dev libdbd-mysql-perl openjdk-8-jre \
-      git cpanminus libsort-naturally-perl libprobe-perl-perl \
+    apt-get -q -y install gnupg ca-certificates software-properties-common
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+    add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu noble-cran40/"
+    apt-get -q update
+    apt-get -q -y upgrade
+    DEBIAN_FRONTEND=noninteractive apt-get -q -y install build-essential curl libcurl4-openssl-dev libssl-dev r-base r-base-dev \
+      libdbd-mysql-perl openjdk-8-jre git cpanminus libsort-naturally-perl libprobe-perl-perl \
       libclass-insideout-perl libyaml-tiny-perl libdata-compare-perl libmath-derivative-perl \
       libfile-readbackwards-perl libyaml-perl libtest-most-perl libtest-exception-perl \
       libsub-uplevel-perl libexception-class-perl libdevel-stacktrace-perl \
       libclass-data-inheritable-perl libtest-deep-perl libtest-warn-perl libtest-differences-perl \
       libcapture-tiny-perl libtext-diff-perl libtext-csv-perl libclone-choose-perl \
-      libtest-without-module-perl
-    curl -SsOL https://cran.r-project.org/src/base/R-4/R-4.0.2.tar.gz
-    tar zxf R-4.0.2.tar.gz
-    cd R-4.0.2
-    ./configure --disable-java --with-blas --without-x
-    make
-    make check
-    mkdir -p /usr/local/lib/R/lib
-    make install
-    perl -spi -e 's/# (.*)\@CRAN\@(.*)/${1}https:\/\/cloud.r-project.org\/$2/' /usr/local/lib/R/library/base/R/Rprofile
-    cd ..
-    rm -rf R-4.0.2*
+      libtest-without-module-perl libglib2.0-0t64 libglib2.0-dev
     R --slave -e "update.packages(ask=FALSE)"
     R --slave -e "install.packages('BiocManager')"
     R --slave -e "BiocManager::install()"
@@ -109,10 +96,7 @@ From: /data/SBBS-BuschLab/containers/Ubuntu-18.04.sif
     rm picard-tools-1.110-detct.zip
     cp -r DETCT /usr/local
     rm -rf DETCT
-    apt-get -q -y purge texlive-fonts-extra git cpanminus build-essential gfortran \
-      libopenblas-dev libreadline-dev zlib1g-dev libbz2-dev liblzma-dev libpcre2-dev \
-      libcurl4-openssl-dev libpng-dev libjpeg8-dev libtiff5-dev libcairo2-dev libicu-dev \
-      libxml2-dev libssl-dev tcl-dev tk-dev libncurses5-dev libncursesw5-dev
+    apt-get -q -y purge gnupg software-properties-common build-essential curl libcurl4-openssl-dev r-base-dev libssl-dev libglib2.0-dev
     apt-get -q -y clean
     rm -rf /var/lib/apt/lists/*
 
