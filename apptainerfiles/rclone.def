@@ -1,19 +1,20 @@
 Bootstrap: localimage
-From: /data/SBBS-BuschLab/containers/Alpine-3.17.1.sif
+From: /data/SBBS-BuschLab/containers/Alpine-3.24.3.sif
 
 %labels
     Author Ian Sealy
-    Version 1.65.2
+    Version 1.75.1
 
 %post
     apk --no-cache add --virtual build-dependencies go git
     git clone https://github.com/rclone/rclone.git
     cd rclone
-    git checkout tags/v1.65.2
-    go build
+    git checkout tags/v1.75.1
+    GOMAXPROCS=2 go build -p 1
     mkdir -p /usr/local/man/man1
     cp rclone /usr/local/bin
     cp rclone.1 /usr/local/man/man1
+    go clean -modcache
     cd ..
     rm -rf rclone $HOME/go $HOME/.cache
     apk del build-dependencies
